@@ -100,7 +100,6 @@ set(link_libs
 	${X11_X11_LIB}
 	${X11_Xxf86vm_LIB}
 )
-link_libraries(${link_libs})
 
 # Source files
 
@@ -150,6 +149,7 @@ add_library(IRRMESHOBJ OBJECT
 	${IRRMESHLOADER}
 	${IRRMESHWRITER}
 )
+target_link_libraries(IRRMESHOBJ PRIVATE ${link_libs})
 
 add_library(IRROBJ OBJECT
 	CBillboardSceneNode.cpp
@@ -181,6 +181,7 @@ add_library(IRROBJ OBJECT
 	CDefaultSceneNodeFactory.cpp
 	CSceneLoaderIrr.cpp
 )
+target_link_libraries(IRROBJ PRIVATE ${link_libs})
 
 add_library(IRRPARTICLEOBJ OBJECT
 	CParticleAnimatedMeshSceneNodeEmitter.cpp
@@ -197,6 +198,7 @@ add_library(IRRPARTICLEOBJ OBJECT
 	CParticleSystemSceneNode.cpp
 	CParticleScaleAffector.cpp
 )
+target_link_libraries(IRRPARTICLEOBJ PRIVATE ${link_libs})
 
 add_library(IRRANIMOBJ OBJECT
 	CSceneNodeAnimatorCameraFPS.cpp
@@ -209,6 +211,7 @@ add_library(IRRANIMOBJ OBJECT
 	CSceneNodeAnimatorRotation.cpp
 	CSceneNodeAnimatorTexture.cpp
 )
+target_link_libraries(IRRANIMOBJ PRIVATE ${link_libs})
 
 set(IRRDRVROBJ
 	CNullDriver.cpp
@@ -269,6 +272,7 @@ add_library(IRRVIDEOOBJ OBJECT
 	${IRRDRVROBJ}
 	${IRRIMAGEOBJ}
 )
+target_link_libraries(IRRVIDEOOBJ PRIVATE ${link_libs})
 
 add_library(IRRSWRENDEROBJ OBJECT
 	CSoftwareDriver.cpp
@@ -313,6 +317,7 @@ add_library(IRRSWRENDEROBJ OBJECT
 	CTRGouraudNoZ2.cpp
 	burning_shader_color.cpp
 )
+target_link_libraries(IRRSWRENDEROBJ PRIVATE ${link_libs})
 
 add_library(IRRIOOBJ OBJECT
 	CFileList.cpp
@@ -332,6 +337,7 @@ add_library(IRRIOOBJ OBJECT
 	irrXML.cpp
 	CAttributes.cpp
 )
+target_link_libraries(IRRIOOBJ PRIVATE ${link_libs})
 
 add_library(IRROTHEROBJ OBJECT
 	CIrrDeviceSDL.cpp
@@ -348,6 +354,7 @@ add_library(IRROTHEROBJ OBJECT
 	CProfiler.cpp
 	utf8.cpp
 )
+target_link_libraries(IRROTHEROBJ OBJECT ${link_libs})
 
 if(ANDROID)
 	target_sources(IRROTHEROBJ PRIVATE
@@ -396,6 +403,7 @@ add_library(IRRGUIOBJ OBJECT
 	CGUITreeView.cpp
 	CGUIProfiler.cpp
 )
+target_link_libraries(IRRGUIOBJ PRIVATE ${link_libs})
 
 # Library
 
