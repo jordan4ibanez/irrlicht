@@ -29,6 +29,7 @@ endif()
 find_package(ZLIB REQUIRED)
 find_package(JPEG REQUIRED)
 find_package(PNG REQUIRED)
+find_package(WebP REQUIRED)
 
 # To configure the features available in this Irrlicht build please edit
 # include/IrrCompileConfig.h and re-run CMake from a clean state
@@ -83,6 +84,7 @@ set(link_includes
 	"${ZLIB_INCLUDE_DIR}"
 	"${JPEG_INCLUDE_DIR}"
 	"${PNG_INCLUDE_DIR}"
+	"${WebP_INCLUDE_DIR}"
 
 	${OPENGL_INCLUDE_DIR}
 	${OPENGLES2_INCLUDE_DIR}
@@ -96,6 +98,7 @@ set(link_libs
 	"${ZLIB_LIBRARY}"
 	"${JPEG_LIBRARY}"
 	"${PNG_LIBRARY}"
+	WebP::WebP
 
 	${OPENGL_LIBRARIES}
 	${OPENGLES_LIBRARY}
