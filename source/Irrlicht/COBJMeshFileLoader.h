@@ -40,8 +40,9 @@ public:
 
 private:
 
-	struct SObjMtl
+	class SObjMtl
 	{
+	public:
 		SObjMtl() : Meshbuffer(0), Bumpiness (1.0f), Illumination(0),
 			RecalculateNormals(false)
 		{
