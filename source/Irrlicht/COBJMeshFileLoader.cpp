@@ -206,7 +206,7 @@ IAnimatedMesh* COBJMeshFileLoader::createMesh(io::IReadFile* file)
 				mtlChanged=false;
 			}
 			if (currMtl)
-				v.Color = currMtl->Meshbuffer->Material.DiffuseColor;
+				v.Color = currMtl->meshbuffer->Material.DiffuseColor;
 
 			// get all vertices data in this face (current line of obj file)
 			const core::stringc wordBuffer = copyLine(bufPtr, bufEnd);
@@ -246,20 +246,20 @@ IAnimatedMesh* COBJMeshFileLoader::createMesh(io::IReadFile* file)
 				else
 				{
 					v.Normal.set(0.0f,0.0f,0.0f);
-					currMtl->RecalculateNormals=true;
+					currMtl->recalculateNormals=true;
 				}
 
 				int vertLocation;
-				auto n = currMtl->VertMap.find(v);
-				if (n != currMtl->VertMap.end())
+				auto n = currMtl->vertMap.find(v);
+				if (n != currMtl->vertMap.end())
 				{
 					vertLocation = n->second;
 				}
 				else
 				{
-					currMtl->Meshbuffer->Vertices.push_back(v);
-					vertLocation = currMtl->Meshbuffer->Vertices.size() -1;
-					currMtl->VertMap.emplace(v, vertLocation);
+					currMtl->meshbuffer->Vertices.push_back(v);
+					vertLocation = currMtl->meshbuffer->Vertices.size() -1;
+					currMtl->vertMap.emplace(v, vertLocation);
 				}
 
 				faceCorners.push_back(vertLocation);
@@ -275,11 +275,11 @@ IAnimatedMesh* COBJMeshFileLoader::createMesh(io::IReadFile* file)
 				// Add a triangle
 				const int a = faceCorners[i + 1];
 				const int b = faceCorners[i];
-				if (a != b && a != c && b != c)	// ignore degenerated faces. We can get them when we merge vertices above in the VertMap.
+				if (a != b && a != c && b != c)	// ignore degenerated faces. We can get them when we merge vertices above in the vertMap.
 				{
-					currMtl->Meshbuffer->Indices.push_back(a);
-					currMtl->Meshbuffer->Indices.push_back(b);
-					currMtl->Meshbuffer->Indices.push_back(c);
+					currMtl->meshbuffer->Indices.push_back(a);
+					currMtl->meshbuffer->Indices.push_back(b);
+					currMtl->meshbuffer->Indices.push_back(c);
 				}
 				else
 				{
@@ -311,12 +311,12 @@ IAnimatedMesh* COBJMeshFileLoader::createMesh(io::IReadFile* file)
 	// Combine all the groups (meshbuffers) into the mesh
 	for ( u32 m = 0; m < Materials.size(); ++m )
 	{
-		if ( Materials[m]->Meshbuffer->getIndexCount() > 0 )
+		if ( Materials[m]->meshbuffer->getIndexCount() > 0 )
 		{
-			Materials[m]->Meshbuffer->recalculateBoundingBox();
-			if (Materials[m]->RecalculateNormals)
-				SceneManager->getMeshManipulator()->recalculateNormals(Materials[m]->Meshbuffer);
-			mesh->addMeshBuffer( Materials[m]->Meshbuffer );
+			Materials[m]->meshbuffer->recalculateBoundingBox();
+			if (Materials[m]->recalculateNormals)
+				SceneManager->getMeshManipulator()->recalculateNormals(Materials[m]->meshbuffer);
+			mesh->addMeshBuffer( Materials[m]->meshbuffer );
 		}
 	}
 
@@ -405,9 +405,9 @@ COBJMeshFileLoader::SObjMtl* COBJMeshFileLoader::findMtl(const core::stringc& mt
 	// exact match does return immediately, only name match means a new group
 	for (u32 i = 0; i < Materials.size(); ++i)
 	{
-		if ( Materials[i]->Name == mtlName )
+		if ( Materials[i]->name == mtlName )
 		{
-			if ( Materials[i]->Group == grpName )
+			if ( Materials[i]->group == grpName )
 				return Materials[i];
 			else
 				defMaterial = Materials[i];
@@ -417,14 +417,14 @@ COBJMeshFileLoader::SObjMtl* COBJMeshFileLoader::findMtl(const core::stringc& mt
 	if (defMaterial)
 	{
 		Materials.push_back(new SObjMtl(*defMaterial));
-		Materials.getLast()->Group = grpName;
+		Materials.getLast()->group = grpName;
 		return Materials.getLast();
 	}
 	// we found a new group for a non-existant material
 	else if (grpName.size())
 	{
 		Materials.push_back(new SObjMtl(*Materials[0]));
-		Materials.getLast()->Group = grpName;
+		Materials.getLast()->group = grpName;
 		return Materials.getLast();
 	}
 	return 0;
@@ -597,7 +597,7 @@ void COBJMeshFileLoader::cleanUp()
 {
 	for (u32 i=0; i < Materials.size(); ++i )
 	{
-		Materials[i]->Meshbuffer->drop();
+		Materials[i]->meshbuffer->drop();
 		delete Materials[i];
 	}
 

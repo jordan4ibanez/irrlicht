@@ -43,32 +43,42 @@ private:
 	class SObjMtl
 	{
 	public:
-		SObjMtl() : Meshbuffer(0), Bumpiness (1.0f), Illumination(0),
-			RecalculateNormals(false)
+		SObjMtl()
+			: vertMap{}
+			, meshbuffer{}
+			, name{}
+			, group{}
+			, bumpiness{1.0f}
+			, illumination{0}
+			, recalculateNormals{false}
 		{
-			Meshbuffer = new SMeshBuffer();
-			Meshbuffer->Material.Shininess = 0.0f;
-			Meshbuffer->Material.AmbientColor = video::SColorf(0.2f, 0.2f, 0.2f, 1.0f).toSColor();
-			Meshbuffer->Material.DiffuseColor = video::SColorf(0.8f, 0.8f, 0.8f, 1.0f).toSColor();
-			Meshbuffer->Material.SpecularColor = video::SColorf(1.0f, 1.0f, 1.0f, 1.0f).toSColor();
+			meshbuffer = new SMeshBuffer();
+			meshbuffer->Material.Shininess = 0.0f;
+			meshbuffer->Material.AmbientColor = video::SColorf(0.2f, 0.2f, 0.2f, 1.0f).toSColor();
+			meshbuffer->Material.DiffuseColor = video::SColorf(0.8f, 0.8f, 0.8f, 1.0f).toSColor();
+			meshbuffer->Material.SpecularColor = video::SColorf(1.0f, 1.0f, 1.0f, 1.0f).toSColor();
 		}
 
 		SObjMtl(const SObjMtl& o)
-			: Name(o.Name), Group(o.Group),
-			Bumpiness(o.Bumpiness), Illumination(o.Illumination),
-			RecalculateNormals(false)
+			: vertMap{}
+			, meshbuffer{nullptr}
+			, name{}
+			, group{o.group}
+			, bumpiness{o.bumpiness}
+			, illumination{o.illumination}
+			, recalculateNormals{false}
 		{
-			Meshbuffer = new SMeshBuffer();
-			Meshbuffer->Material = o.Meshbuffer->Material;
+			meshbuffer = new SMeshBuffer();
+			meshbuffer->Material = o.meshbuffer->Material;
 		}
 
-		std::map<video::S3DVertex, int> VertMap;
-		scene::SMeshBuffer *Meshbuffer;
-		core::stringc Name;
-		core::stringc Group;
-		f32 Bumpiness;
-		c8 Illumination;
-		bool RecalculateNormals;
+		std::map<video::S3DVertex, int> vertMap;
+		scene::SMeshBuffer *meshbuffer;
+		core::stringc name;
+		core::stringc group;
+		f32 bumpiness;
+		c8 illumination;
+		bool recalculateNormals;
 	};
 
 	// returns a pointer to the first printable character available in the buffer
