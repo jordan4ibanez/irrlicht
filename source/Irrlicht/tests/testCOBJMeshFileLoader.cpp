@@ -1,8 +1,9 @@
 #include "COBJMeshFileLoader.h"
+#include "inMemoryFile.h"
+#include "irrlicht.h"
 
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
-#include <irrlicht.h>
 
 TEST_SUITE_BEGIN("COBJMeshLoader");
 
@@ -31,7 +32,9 @@ TEST_CASE("mesh loading")
 	irr::scene::ISceneManager* smgr{device->getSceneManager()};
 	irr::scene::COBJMeshFileLoader loader{smgr, fs};
 
+	irr::io::InMemoryFile filebuf{""};
 
+	loader.createMesh(&filebuf);
 }
 
 TEST_SUITE_END();

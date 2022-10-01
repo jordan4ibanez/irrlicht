@@ -328,10 +328,10 @@ struct SSkinMeshBuffer : public IMeshBuffer
 	}
 
 	//! append the vertices and indices to the current buffer
-	virtual void append(const void* const vertices, u32 numVertices, const u16* const indices, u32 numIndices) _IRR_OVERRIDE_ {}
+	virtual void append(const void* const /*vertices*/, u32 /*numVertices*/, const u16* const /*indices*/, u32 /*numIndices*/) _IRR_OVERRIDE_ {}
 
 	//! append the meshbuffer to the current buffer
-	virtual void append(const IMeshBuffer* const other) _IRR_OVERRIDE_ {}
+	virtual void append(const IMeshBuffer* const /*other*/) _IRR_OVERRIDE_ {}
 
 	//! get the current hardware mapping hint for vertex buffers
 	virtual E_HARDWARE_MAPPING getHardwareMappingHint_Vertex() const _IRR_OVERRIDE_

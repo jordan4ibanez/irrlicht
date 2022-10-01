@@ -66,7 +66,7 @@ namespace scene
 		\param startFrameLoop: start frame
 		\param endFrameLoop: end frame
 		\return The animated mesh based on a detail level. */
-		virtual IMesh* getMesh(s32 frame, s32 detailLevel=255, s32 startFrameLoop=-1, s32 endFrameLoop=-1) _IRR_OVERRIDE_
+		virtual IMesh* getMesh(s32 frame, s32 /*detailLevel*/=255, s32 /*startFrameLoop*/=-1, s32 /*endFrameLoop*/=-1) _IRR_OVERRIDE_
 		{
 			if (Meshes.empty())
 				return 0;

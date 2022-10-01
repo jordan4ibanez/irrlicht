@@ -212,7 +212,7 @@ namespace scene
 		undefined.
 		\param other Meshbuffer to be appended to this one.
 		*/
-		virtual void append(const IMeshBuffer* const other) _IRR_OVERRIDE_
+		virtual void append(const IMeshBuffer* const /*other*/) _IRR_OVERRIDE_
 		{
 			/*
 			if (this==other)

@@ -41,7 +41,7 @@ public:
 	}
 	\endcode
 	*/
-	virtual void OnSetMaterial(const SMaterial& material) { }
+	virtual void OnSetMaterial(const SMaterial& /*material*/) { }
 
 	//! Called by the engine when the vertex and/or pixel shader constants for an material renderer should be set.
 	/**

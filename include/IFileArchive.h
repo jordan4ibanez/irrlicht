@@ -89,7 +89,7 @@ public:
 	If directories are not added manually opening files might still work,
 	but checks if file exists will fail.
 	*/
-	virtual void addDirectoryToFileList(const io::path &filename) {}
+	virtual void addDirectoryToFileList(const io::path &/*filename*/) {}
 
 	//! An optionally used password string
 	/** This variable is publicly accessible from the interface in order to

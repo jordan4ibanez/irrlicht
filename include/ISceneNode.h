@@ -338,7 +338,7 @@ namespace scene
 		directly modify the material of a scene node.
 		\param num Zero based index. The maximal value is getMaterialCount() - 1.
 		\return The material at that index. */
-		virtual video::SMaterial& getMaterial(u32 num)
+		virtual video::SMaterial& getMaterial(u32 /*num*/)
 		{
 			return video::IdentityMaterial;
 		}
@@ -575,7 +575,7 @@ namespace scene
 		/** \param newParent An optional new parent.
 		\param newManager An optional new scene manager.
 		\return The newly created clone of this node. */
-		virtual ISceneNode* clone(ISceneNode* newParent=0, ISceneManager* newManager=0)
+		virtual ISceneNode* clone(ISceneNode* /*newParent*/=0, ISceneManager* /*newManager*/=0)
 		{
 			return 0; // to be implemented by derived classes
 		}
