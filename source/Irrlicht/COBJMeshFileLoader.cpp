@@ -51,7 +51,7 @@ COBJMeshFileLoader::~COBJMeshFileLoader()
 //! based on the file extension (e.g. ".bsp")
 bool COBJMeshFileLoader::isALoadableFileExtension(const io::path& filename) const
 {
-	return core::hasFileExtension ( filename, "obj" );
+	return core::hasFileExtension(filename, "obj");
 }
 
 

@@ -329,3 +329,5 @@ install(TARGETS ${INSTALL_TARGETS}
 	EXPORT IrrlichtMt-export
 	DESTINATION "${CMAKE_INSTALL_LIBDIR}"
 )
+
+add_subdirectory(tests)
