@@ -5,12 +5,14 @@
 #ifndef __C_OBJ_MESH_FILE_LOADER_H_INCLUDED__
 #define __C_OBJ_MESH_FILE_LOADER_H_INCLUDED__
 
-#include <map>
 #include "IMeshLoader.h"
 #include "IFileSystem.h"
 #include "ISceneManager.h"
 #include "irrString.h"
 #include "SMeshBuffer.h"
+
+#include <map>
+#include <memory>
 
 namespace irr
 {
@@ -36,7 +38,9 @@ public:
 	//! \return Pointer to the created mesh. Returns 0 if loading failed.
 	//! If you no longer need the mesh, you should call IAnimatedMesh::drop().
 	//! See IReferenceCounted::drop() for more information.
-	virtual IAnimatedMesh* createMesh(io::IReadFile* file) _IRR_OVERRIDE_;
+	IAnimatedMesh* createMesh(io::IReadFile* file) override;
+
+	std::unique_ptr<IAnimatedMesh> load(io::IReadFile* file);
 
 private:
 

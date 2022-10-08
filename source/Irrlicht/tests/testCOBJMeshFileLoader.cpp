@@ -32,9 +32,12 @@ TEST_CASE("mesh loading")
 	irr::scene::ISceneManager* smgr{device->getSceneManager()};
 	irr::scene::COBJMeshFileLoader loader{smgr, fs};
 
-	irr::io::InMemoryFile filebuf{""};
+	SUBCASE("empty file") {
+		irr::io::InMemoryFile filebuf{""};
 
-	loader.createMesh(&filebuf);
+		auto mesh{loader.load(&filebuf)};
+		CHECK(mesh == nullptr);
+	}
 }
 
 TEST_SUITE_END();

@@ -17,6 +17,8 @@
 #include "coreutil.h"
 #include "os.h"
 
+#include <memory>
+
 namespace irr
 {
 namespace scene
@@ -53,7 +55,6 @@ bool COBJMeshFileLoader::isALoadableFileExtension(const io::path& filename) cons
 {
 	return core::hasFileExtension(filename, "obj");
 }
-
 
 //! creates/loads an animated mesh from the file.
 //! \return Pointer to the created mesh. Returns 0 if loading failed.
@@ -338,6 +339,11 @@ IAnimatedMesh* COBJMeshFileLoader::createMesh(io::IReadFile* file)
 	mesh->drop();
 
 	return animMesh;
+}
+
+std::unique_ptr<IAnimatedMesh> COBJMeshFileLoader::load(io::IReadFile* file)
+{
+	return std::unique_ptr<IAnimatedMesh>{createMesh(file)};
 }
 
 //! Read RGB color
