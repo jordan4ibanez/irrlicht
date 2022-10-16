@@ -42,6 +42,8 @@ endif()
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 enable_testing()
+
+add_subdirectory(source/lib/tinygltf)
 add_subdirectory(source/Irrlicht)
 add_subdirectory(test)
 
