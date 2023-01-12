@@ -100,10 +100,8 @@ if(SDL_ENABLED)
 	message(STATUS "Found SDL2: ${SDL2_LIBRARIES}")
 endif()
 if(BUILD_HEADLESS)
-    # always require SDL for headless build
-    find_package(SDL2 REQUIRED)
-    # SDL won't be included in source code unless defined
-    add_definitions(-D_IRR_BUILD_WITH_SDL_DRIVER_) # I forget what the define is actually called
+	find_package(SDL2 REQUIRED)
+	add_definitions(-DBUILD_HEADLESS=1)
 endif()
 
 # Platform-specific libs

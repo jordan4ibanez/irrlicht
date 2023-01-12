@@ -40,6 +40,7 @@ endif()
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 add_subdirectory(source/Irrlicht)
 
+option(BUILD_HEADLESS "Build in headless mode" ON)
 option(BUILD_EXAMPLES "Build example applications" FALSE)
 if(BUILD_EXAMPLES)
 	add_subdirectory(examples)
