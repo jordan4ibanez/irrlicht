@@ -9,9 +9,11 @@ endif()
 
 set(IRRLICHTMT_REVISION 13)
 
+# workaround: cmake<3.9 requires C language for internal checks
+# https://gitlab.kitware.com/cmake/cmake/-/merge_requests/487
 project(Irrlicht
 	VERSION 1.9.0.${IRRLICHTMT_REVISION}
-	LANGUAGES CXX
+        LANGUAGES C CXX
 )
 
 message(STATUS "*** Building IrrlichtMt ${PROJECT_VERSION} ***")
