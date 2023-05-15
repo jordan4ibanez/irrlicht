@@ -6,8 +6,6 @@
 #include "IReadFile.h"
 #include "path.h"
 
-#include <tiny_gltf.h>
-
 namespace irr
 {
 
