@@ -54,11 +54,11 @@ private:
 		int m_filesize;
 	};
 
-	class ModelParser {
+	class MeshExtractor {
 	public:
-		ModelParser(const tinygltf::Model& model) noexcept;
+		MeshExtractor(const tinygltf::Model& model) noexcept;
 
-		ModelParser(const tinygltf::Model&& model) noexcept;
+		MeshExtractor(const tinygltf::Model&& model) noexcept;
 
 		/* Gets indices for the given mesh/primitive.
 		 *
