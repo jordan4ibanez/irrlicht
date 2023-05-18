@@ -56,9 +56,9 @@ private:
 
 	class ModelParser {
 	public:
-		ModelParser(const tinygltf::Model& model);
+		ModelParser(const tinygltf::Model& model) noexcept;
 
-		ModelParser(const tinygltf::Model&& model);
+		ModelParser(const tinygltf::Model&& model) noexcept;
 
 		/* Gets indices for the given mesh/primitive.
 		 *
