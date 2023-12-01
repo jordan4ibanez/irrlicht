@@ -81,7 +81,11 @@ TEST_CASE("minimal triangle") {
 }
 
 TEST_CASE("blender cube") {
-	ScopedMesh sm("source/Irrlicht/tests/assets/blender_cube.gltf");
+	auto path = GENERATE(
+		"source/Irrlicht/tests/assets/blender_cube.gltf",
+		"source/Irrlicht/tests/assets/blender_cube_tcoords_8bit.gltf");
+	INFO(path);
+	ScopedMesh sm(path);
 	REQUIRE(sm.getMesh() != nullptr);
 	REQUIRE(sm.getMesh()->getMeshBufferCount() == 1);
 	SECTION("vertex coordinates are correct") {
