@@ -116,6 +116,8 @@ private:
 		std::size_t getPositionAccessorIdx(const std::size_t meshIdx,
 				const std::size_t primitiveIdx) const;
 
+		bool isAnimated() const;
+
 		/* Get the accessor id of the normals of a primitive.
 		 *
 		 * -1 is returned if none are present.

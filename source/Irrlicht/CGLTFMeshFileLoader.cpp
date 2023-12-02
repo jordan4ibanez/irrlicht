@@ -407,6 +407,16 @@ std::size_t CGLTFMeshFileLoader::MeshExtractor::getPositionAccessorIdx(
 }
 
 /**
+ * Get if a model contains animation.
+ * Documentation: https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#reference-animation
+ * Type: vector<Animation>
+ * Required: NO
+*/
+bool CGLTFMeshFileLoader::MeshExtractor::isAnimated() const {
+	return m_model.animations.size() > 0;
+}
+
+/**
  * The index of the accessor that contains the NORMALs.
  * Documentation: https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#meshes-overview
  * Type: VEC3 (Float)
