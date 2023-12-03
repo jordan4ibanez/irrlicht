@@ -131,14 +131,17 @@ std::vector<u16> CGLTFMeshFileLoader::MeshExtractor::getIndices(
 std::vector<video::S3DVertex> CGLTFMeshFileLoader::MeshExtractor::getVertices(
 		const std::size_t meshIdx,
 		const std::size_t primitiveIdx,
-		const core::vector3df translation		
+		const core::vector3df translation,
+		const core::quaternion rotation,
+		const core::vector3df scale
 ) const {
 
 	const auto positionAccessorIdx = getPositionAccessorIdx(
 			meshIdx, primitiveIdx);
 	std::vector<vertex_t> vertices{};
 	vertices.resize(getElemCount(positionAccessorIdx));
-	copyPositions(positionAccessorIdx, vertices, translation);
+	copyPositions(positionAccessorIdx, vertices,
+		translation, rotation, scale);
 
 	const auto normalAccessorIdx = getNormalAccessorIdx(
 			meshIdx, primitiveIdx);
@@ -245,6 +248,7 @@ core::vector2df CGLTFMeshFileLoader::MeshExtractor::readVec2DF(
 core::vector3df CGLTFMeshFileLoader::MeshExtractor::readVec3DF(
 		const BufferOffset& readFrom,
 		const core::vector3df translation = {0.0f,0.0f,0.0f},
+		const core::quaternion rotation = {0.0f,0.0f,0.0f,1.0f},
 		const core::vector3df scale = {1.0f,1.0f,1.0f})
 {
 	//? Scale, then move (I think?)
@@ -262,7 +266,9 @@ core::vector3df CGLTFMeshFileLoader::MeshExtractor::readVec3DF(
 void CGLTFMeshFileLoader::MeshExtractor::copyPositions(
 		const std::size_t accessorIdx,
 		std::vector<vertex_t>& vertices,
-		const core::vector3df translation) const 
+		const core::vector3df translation,
+		const core::quaternion rotation,
+		const core::vector3df scale) const 
 {
 
 	const auto& buffer = getBuffer(accessorIdx);
@@ -549,6 +555,8 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 		// We are now in the "scope of the node"
 
 		printVec(translation);
+		printQuat(rotation);
+		printVec(scale);
 
 		const int meshIdx = node.mesh;
 
@@ -556,7 +564,8 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 		if (meshIdx >= 0) {
 			for (std::size_t i = 0; i < getPrimitiveCount(meshIdx); ++i) {
 				auto indices = getIndices(meshIdx, i);
-				auto vertices = getVertices(meshIdx, i, translation);
+				auto vertices = getVertices(
+					meshIdx, i, translation, rotation, scale);
 
 				SMeshBuffer* meshbuf(new SMeshBuffer {});
 				meshbuf->append(vertices.data(), vertices.size(),
