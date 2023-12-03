@@ -158,6 +158,23 @@ std::size_t CGLTFMeshFileLoader::MeshExtractor::getPrimitiveCount(
 }
 
 /**
+ * Get the amount of nodes that a model contains.
+*/
+std::size_t CGLTFMeshFileLoader::MeshExtractor::getNodeCount() const
+{
+	return m_model.nodes.size();
+}
+
+/**
+ * Get a constant reference to a node in a model.
+ * Documentation: https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#reference-node
+*/
+tinygltf::Node CGLTFMeshFileLoader::MeshExtractor::getNode(const std::size_t nodeIdx) const
+{
+	return m_model.nodes.at(nodeIdx);
+}
+
+/**
  * Templated buffer reader. Based on type width.
  * This is specifically used to build upon to read more complex data types.
  * It is also used raw to read arrays directly.
@@ -424,6 +441,10 @@ void CGLTFMeshFileLoader::loadPrimitives(
 		const MeshExtractor& parser,
 		SMesh* mesh)
 {
+	for (std::size_t i = 0; i < parser.getNodeCount(); i++) {
+
+	}
+
 	for (std::size_t i = 0; i < parser.getMeshCount(); ++i) {
 		for (std::size_t j = 0; j < parser.getPrimitiveCount(i); ++j) {
 			auto indices = parser.getIndices(i, j);

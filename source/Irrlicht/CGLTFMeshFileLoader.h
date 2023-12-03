@@ -70,6 +70,10 @@ private:
 
 		std::size_t getPrimitiveCount(const std::size_t meshIdx) const;
 
+		std::size_t getNodeCount() const;
+
+		tinygltf::Node getNode(const std::size_t nodeIdx) const;
+
 	private:
 		tinygltf::Model m_model;
 
