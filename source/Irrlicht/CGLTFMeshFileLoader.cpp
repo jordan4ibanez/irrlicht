@@ -532,7 +532,7 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 		const auto scene = sceneOption.value();
 
 		for (int nodeIdx : scene.nodes) {
-			climbNodeTree(mesh, {}, nodeIdx);
+			return climbNodeTree(mesh, {}, nodeIdx);
 		}
 
 	} else if (nodeIdxOption.has_value()) {
@@ -569,7 +569,7 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 		depthPrint(1, nodeIdx);
 		// printf(std::to_string(node.children.size()).append("\n").c_str);
 		for (int childNodeIdx : node.children) {
-			climbNodeTree(mesh, {}, childNodeIdx);
+			return climbNodeTree(mesh, {}, childNodeIdx);
 		}
 	} else {
 		os::Printer::log("EMPTY CLIMB TREE ITERATION!", ELL_ERROR);
