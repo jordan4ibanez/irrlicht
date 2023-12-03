@@ -175,6 +175,23 @@ tinygltf::Node CGLTFMeshFileLoader::MeshExtractor::getNode(const std::size_t nod
 }
 
 /**
+ * Get the amount of scenes that a model contains.
+*/
+std::size_t CGLTFMeshFileLoader::MeshExtractor::getSceneCount() const {
+	return m_model.scenes.size();
+}
+
+/**
+ * Get scene 0 in GLTF. We only support scene 0 due to the fact this is a model loader.
+*/
+
+tinygltf::Scene CGLTFMeshFileLoader::MeshExtractor::getScene() const {
+	return m_model.scenes.at(0);
+}
+
+
+
+/**
  * Templated buffer reader. Based on type width.
  * This is specifically used to build upon to read more complex data types.
  * It is also used raw to read arrays directly.

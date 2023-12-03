@@ -74,6 +74,10 @@ private:
 
 		tinygltf::Node getNode(const std::size_t nodeIdx) const;
 
+		std::size_t getSceneCount() const;
+
+		tinygltf::Scene getScene() const;
+
 	private:
 		tinygltf::Model m_model;
 
