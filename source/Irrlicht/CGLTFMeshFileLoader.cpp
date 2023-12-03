@@ -541,9 +541,9 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 		const auto node = m_model.nodes.at(nodeIdx);
 
 		//TRS
-		core::vector3df *translation = new core::vector3df(0.0f, 0.0f, 0.0f);
-		core::quaternion *rotation = new core::quaternion(0.0f, 0.0f, 0.0f, 1.0f);
-		core::vector3df *scale = new core::vector3df(1.0f, 1.0f, 1.0f);
+		core::vector3df translation{0.0f, 0.0f, 0.0f};
+		core::quaternion rotation{0.0f, 0.0f, 0.0f, 1.0f};
+		core::vector3df scale{1.0f, 1.0f, 1.0f};
 		getNodeTRS(node, translation, rotation, scale);
 
 		// We are now in the "scope of the node"
