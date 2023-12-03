@@ -77,28 +77,7 @@ bool CGLTFMeshFileLoader::isALoadableFileExtension(
 }
 
 
-/**
- * Load up the rawest form of the model. The vertex positions and indices.
- * Documentation: https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#meshes
- * If material is undefined, then a default material MUST be used.
-*/
-void CGLTFMeshFileLoader::loadPrimitives(
-		const MeshExtractor& parser,
-		SMesh* mesh)
-{
-	for (std::size_t i = 0; i < parser.getMeshCount(); ++i) {
-		for (std::size_t j = 0; j < parser.getPrimitiveCount(i); ++j) {
-			auto indices = parser.getIndices(i, j);
-			auto vertices = parser.getVertices(i, j);
 
-			SMeshBuffer* meshbuf(new SMeshBuffer {});
-			meshbuf->append(vertices.data(), vertices.size(),
-				indices.data(), indices.size());
-			mesh->addMeshBuffer(meshbuf);
-			meshbuf->drop();
-		}
-	}
-}
 
 CGLTFMeshFileLoader::MeshExtractor::MeshExtractor(
 		const tinygltf::Model& model) noexcept
@@ -433,6 +412,29 @@ std::size_t CGLTFMeshFileLoader::MeshExtractor::getTCoordAccessorIdx(
 		return -1;
 	} else {
 		return result->second;
+	}
+}
+
+/**
+ * Load up the rawest form of the model. The vertex positions and indices.
+ * Documentation: https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#meshes
+ * If material is undefined, then a default material MUST be used.
+*/
+void CGLTFMeshFileLoader::loadPrimitives(
+		const MeshExtractor& parser,
+		SMesh* mesh)
+{
+	for (std::size_t i = 0; i < parser.getMeshCount(); ++i) {
+		for (std::size_t j = 0; j < parser.getPrimitiveCount(i); ++j) {
+			auto indices = parser.getIndices(i, j);
+			auto vertices = parser.getVertices(i, j);
+
+			SMeshBuffer* meshbuf(new SMeshBuffer {});
+			meshbuf->append(vertices.data(), vertices.size(),
+				indices.data(), indices.size());
+			mesh->addMeshBuffer(meshbuf);
+			meshbuf->drop();
+		}
 	}
 }
 
