@@ -76,28 +76,6 @@ bool CGLTFMeshFileLoader::isALoadableFileExtension(
 	return core::hasFileExtension(filename, "gltf");
 }
 
-/**
- * Entry point into loading a GLTF model.
-*/
-IAnimatedMesh* CGLTFMeshFileLoader::createMesh(io::IReadFile* file)
-{
-	tinygltf::Model model {};
-
-	if (file->getSize() <= 0 || !tryParseGLTF(file, model)) {
-		return nullptr;
-	}
-
-	MeshExtractor parser(std::move(model));
-	SMesh* baseMesh(new SMesh {});
-	loadPrimitives(parser, baseMesh);
-
-	SAnimatedMesh* animatedMesh(new SAnimatedMesh {});
-	animatedMesh->addMesh(baseMesh);
-	baseMesh->drop();
-
-	return animatedMesh;
-}
-
 
 /**
  * Load up the rawest form of the model. The vertex positions and indices.
@@ -486,6 +464,29 @@ bool CGLTFMeshFileLoader::tryParseGLTF(io::IReadFile* file,
 
 	return loader.LoadASCIIFromString(&model, &err, &warn, buf.get(),
 		file->getSize(), "", 1);
+}
+
+
+/**
+ * Entry point into loading a GLTF model.
+*/
+IAnimatedMesh* CGLTFMeshFileLoader::createMesh(io::IReadFile* file)
+{
+	tinygltf::Model model {};
+
+	if (file->getSize() <= 0 || !tryParseGLTF(file, model)) {
+		return nullptr;
+	}
+
+	MeshExtractor parser(std::move(model));
+	SMesh* baseMesh(new SMesh {});
+	loadPrimitives(parser, baseMesh);
+
+	SAnimatedMesh* animatedMesh(new SAnimatedMesh {});
+	animatedMesh->addMesh(baseMesh);
+	baseMesh->drop();
+
+	return animatedMesh;
 }
 
 } // namespace scene
