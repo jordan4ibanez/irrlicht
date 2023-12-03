@@ -12,6 +12,7 @@
 #include "SColor.h"
 #include "SMesh.h"
 #include "vector3d.h"
+#include "quaternion.h"
 
 #define TINYGLTF_IMPLEMENTATION
 #include <tiny_gltf.h>
@@ -455,13 +456,61 @@ std::size_t CGLTFMeshFileLoader::MeshExtractor::getTCoordAccessorIdx(
  * * RECURSIVE ITERATION
  * Climb through the node hierarchy (it is a tree)
 */
-int depth = 0;
-void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(std::optional<tinygltf::Scene> scene, std::optional<tinygltf::Node> node) const {
-	// if (scene) {
-	// 	printf("this is a scene\n");
-	// } else if (node != nullptr) {
-	// 	printf("this is a node\n");
-	// }
+int depth = -1;
+void depthPrint(bool sceneOrNode, std::optional<int> nodeID) {
+
+	std::string accum = "";
+	for (int i = 0; i < depth; i++) {
+		accum += "  ";
+	}
+	int nodeValue = 0;
+	if (nodeID.has_value()) {
+		nodeValue = nodeID.value();
+	}
+	accum += sceneOrNode ? "-> Node " + std::to_string(nodeValue) : "Scene";
+	accum += '\n';
+	printf(accum.c_str());
+}
+void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(std::optional<tinygltf::Scene> sceneOption, std::optional<int> nodeIdxOption) const {
+	depth++;
+	if (sceneOption.has_value()) {
+		
+		depthPrint(0, {});
+
+		const auto scene = sceneOption.value();
+
+		for (int nodeIdx : scene.nodes) {
+			climbNodeTree({}, nodeIdx);
+		}
+	} else if (nodeIdxOption.has_value()) {
+		const auto nodeIdx = nodeIdxOption.value();
+		const auto node = m_model.nodes.at(nodeIdx);
+
+		//TRS
+		core::vector3df translation{0.0f, 0.0f, 0.0f};
+		core::quaternion rotation{0.0f, 0.0f, 0.0f, 1.0f};
+		core::vector3df scale{1.0f, 1.0f, 1.0f};
+
+		if (node.translation.size() == 3) {
+			
+		}
+		if (node.rotation.size() == 4) {
+
+		}
+		if (node.scale.size() == 3) {
+
+		}
+		node.translation
+
+		depthPrint(1, nodeIdx);
+
+		for (int childNodeIdx : node.children) {
+			climbNodeTree({}, childNodeIdx);
+		}
+	} else {
+		os::Printer::log("EMPTY CLIMB TREE ITERATION!", ELL_ERROR);
+	}
+	depth--;
 }
 
 /**
@@ -487,7 +536,7 @@ void CGLTFMeshFileLoader::loadPrimitives(
 
 	const auto scene = parser.getScene();
 
-	parser.climbNodeTree(scene, std::optional<tinygltf::Node>{});
+	parser.climbNodeTree(scene, {});
 
 
 	printf(("number of components" + std::to_string(scene.nodes.size()) + "\n").c_str());
