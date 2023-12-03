@@ -450,6 +450,16 @@ std::size_t CGLTFMeshFileLoader::MeshExtractor::getTCoordAccessorIdx(
 }
 
 /**
+ * ! THIS IS DEBUGGING AND SHOULD BE PART OF A METHOD OR SOMETHING.
+ * ? PURE FUNCTIONAL
+ * * RECURSIVE ITERATION
+ * Climb through the node hierarchy (it is a tree)
+*/
+void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree() const {
+	
+}
+
+/**
  * Load up the rawest form of the model. The vertex positions and indices.
  * Documentation: https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#meshes
  * If material is undefined, then a default material MUST be used.
@@ -458,9 +468,23 @@ void CGLTFMeshFileLoader::loadPrimitives(
 		const MeshExtractor& parser,
 		SMesh* mesh)
 {
-	for (std::size_t i = 0; i < parser.getNodeCount(); i++) {
 
+	// for (std::size_t i = 0; i < parser.getNodeCount(); i++) {
+	// 	printf((std::to_string(i) + " hi \n").c_str());
+	// 	const auto node = parser.getNode(i);
+	// }
+
+
+	if (parser.getSceneCount() <= 0) {
+		os::Printer::log("No scenes in gltf model", ELL_ERROR);
+		// I'm sure not cleaning up memory will have no consequences.
+		return;
 	}
+
+	const auto scene = parser.getScene();
+
+	printf(("number of components" + std::to_string(scene.nodes.size()) + "\n").c_str());
+
 
 	for (std::size_t i = 0; i < parser.getMeshCount(); ++i) {
 		for (std::size_t j = 0; j < parser.getPrimitiveCount(i); ++j) {
@@ -517,6 +541,9 @@ IAnimatedMesh* CGLTFMeshFileLoader::createMesh(io::IReadFile* file)
 	if (file->getSize() <= 0 || !tryParseGLTF(file, model)) {
 		return nullptr;
 	}
+
+	printf(("\nloading mesh: " + std::string(file->getFileName().c_str())).c_str());
+	printf("\n");
 
 	MeshExtractor parser(std::move(model));
 	SMesh* baseMesh(new SMesh {});

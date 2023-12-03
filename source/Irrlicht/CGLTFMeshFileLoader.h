@@ -78,6 +78,8 @@ private:
 
 		tinygltf::Scene getScene() const;
 
+		void climbNodeTree() const;
+
 	private:
 		tinygltf::Model m_model;
 
