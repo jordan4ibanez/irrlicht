@@ -552,10 +552,10 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 
 		const int meshIdx = node.mesh;
 
-		for (std::size_t j = 0; j < getPrimitiveCount(meshIdx); ++j) {
+		for (std::size_t i = 0; i < getPrimitiveCount(meshIdx); ++i) {
 
-			auto indices = getIndices(meshIdx, j);
-			auto vertices = getVertices(meshIdx, j, translation);
+			auto indices = getIndices(meshIdx, i);
+			auto vertices = getVertices(meshIdx, i, translation);
 
 			SMeshBuffer* meshbuf(new SMeshBuffer {});
 			meshbuf->append(vertices.data(), vertices.size(),
