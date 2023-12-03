@@ -22,3 +22,13 @@ scripts/glext.h
 
 # vscode cmake plugin
 build/*
+cmake/tinygltfConfig.cmake
+cmake/tinygltfConfigVersion.cmake
+cmake/tinygltfTargets.cmake
+CTestTestfile.cmake
+DartConfiguration.tcl
+source/Irrlicht/CTestTestfile.cmake
+source/Irrlicht/tests/CTestTestfile.cmake
+source/lib/catch2/CTestTestfile.cmake
+source/lib/tinygltf/CTestTestfile.cmake
+test/CTestTestfile.cmake
