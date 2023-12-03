@@ -10,6 +10,7 @@
 #include "SMesh.h"
 #include "vector2d.h"
 #include "vector3d.h"
+#include "quaternion.h"
 
 #include <tiny_gltf.h>
 
@@ -142,6 +143,13 @@ private:
 		 */
 		std::size_t getTCoordAccessorIdx(const std::size_t meshIdx,
 				const std::size_t primitiveIdx) const;
+
+		void getNodeTRS(
+			tinygltf::Node node,
+			core::vector3df &translation,
+			core::quaternion &rotation,
+			core::vector3df &scale
+		) const;
 	};
 
 	void loadPrimitives(const MeshExtractor& parser, SMesh* mesh);

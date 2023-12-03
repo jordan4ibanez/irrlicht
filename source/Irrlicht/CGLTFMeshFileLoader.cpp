@@ -462,6 +462,30 @@ std::size_t CGLTFMeshFileLoader::MeshExtractor::getTCoordAccessorIdx(
 	}
 }
 
+void CGLTFMeshFileLoader::MeshExtractor::getNodeTRS(
+	tinygltf::Node node,
+	core::vector3df &translation,
+	core::quaternion &rotation,
+	core::vector3df &scale
+) const {
+	if (node.translation.size() == 3) {
+			translation.X = node.translation.at(0);
+			translation.Y = node.translation.at(1);
+			translation.Z = node.translation.at(2);
+		}
+	if (node.rotation.size() == 4) {
+		rotation.X = node.rotation.at(0);
+		rotation.Y = node.rotation.at(1);
+		rotation.Z = node.rotation.at(2);
+		rotation.W = node.rotation.at(3);
+	}
+	if (node.scale.size() == 3) {
+		scale.X = node.scale.at(0);
+		scale.Y = node.scale.at(1);
+		scale.Z = node.scale.at(2);
+	}
+}
+
 /**
  * ? PURE FUNCTIONAL
  * * RECURSIVE ITERATION
@@ -499,29 +523,14 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(std::optional<tinygltf::S
 		const auto nodeIdx = nodeIdxOption.value();
 		const auto node = m_model.nodes.at(nodeIdx);
 
-		//! This should probably be it's own function because this is a mess.
 		//TRS
 		core::vector3df translation{0.0f, 0.0f, 0.0f};
 		core::quaternion rotation{0.0f, 0.0f, 0.0f, 1.0f};
 		core::vector3df scale{1.0f, 1.0f, 1.0f};
+		getNodeTRS(node, translation, rotation, scale);
 
-		if (node.translation.size() == 3) {
-			translation.X = node.translation.at(0);
-			translation.Y = node.translation.at(1);
-			translation.Z = node.translation.at(2);
-		}
 
-		if (node.rotation.size() == 4) {
-			rotation.X = node.rotation.at(0);
-			rotation.Y = node.rotation.at(1);
-			rotation.Z = node.rotation.at(2);
-			rotation.W = node.rotation.at(3);
-		}
-		if (node.scale.size() == 3) {
-			scale.X = node.scale.at(0);
-			scale.Y = node.scale.at(1);
-			scale.Z = node.scale.at(2);
-		}
+		printVec(translation);
 
 		depthPrint(1, nodeIdx);
 		// printf(std::to_string(node.children.size()).append("\n").c_str);
