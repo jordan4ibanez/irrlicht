@@ -499,12 +499,15 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(std::optional<tinygltf::S
 			translation.Y = node.translation.at(1);
 			translation.Z = node.translation.at(2);
 		}
-		
+
 		// Bro man, I got my cert off Udemy
 		printf(std::to_string(translation.X).append(", ").append(std::to_string(translation.Y)).append(", ").append(std::to_string(translation.Z)).append("\n").c_str());
 
 		if (node.rotation.size() == 4) {
-			
+			rotation.X = node.rotation.at(0);
+			rotation.Y = node.rotation.at(1);
+			rotation.Z = node.rotation.at(2);
+			rotation.W = node.rotation.at(3);
 		}
 		if (node.scale.size() == 3) {
 			scale.X = node.scale.at(0);
@@ -513,7 +516,7 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(std::optional<tinygltf::S
 		}
 
 		depthPrint(1, nodeIdx);
-
+		// printf(std::to_string(node.children.size()).append("\n").c_str);
 		for (int childNodeIdx : node.children) {
 			climbNodeTree({}, childNodeIdx);
 		}
