@@ -483,24 +483,33 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(std::optional<tinygltf::S
 			climbNodeTree({}, nodeIdx);
 		}
 	} else if (nodeIdxOption.has_value()) {
+
 		const auto nodeIdx = nodeIdxOption.value();
 		const auto node = m_model.nodes.at(nodeIdx);
 
+		//! This should probably be it's own function because this is a mess.
 		//TRS
 		core::vector3df translation{0.0f, 0.0f, 0.0f};
 		core::quaternion rotation{0.0f, 0.0f, 0.0f, 1.0f};
 		core::vector3df scale{1.0f, 1.0f, 1.0f};
 
 		if (node.translation.size() == 3) {
+			translation.X = node.translation.at(0);
+			translation.Y = node.translation.at(1);
+			translation.Z = node.translation.at(2);
+		}
+		
+		// Bro man, I got my cert off Udemy
+		printf(std::to_string(translation.X).append(", ").append(std::to_string(translation.Y)).append(", ").append(std::to_string(translation.Z)).append("\n").c_str());
+
+		if (node.rotation.size() == 4) {
 			
 		}
-		if (node.rotation.size() == 4) {
-
-		}
 		if (node.scale.size() == 3) {
-
+			scale.X = node.scale.at(0);
+			scale.Y = node.scale.at(1);
+			scale.Z = node.scale.at(2);
 		}
-		node.translation
 
 		depthPrint(1, nodeIdx);
 
