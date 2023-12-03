@@ -400,7 +400,7 @@ std::size_t CGLTFMeshFileLoader::MeshExtractor::getIndicesAccessorIdx(
 		const std::size_t meshIdx,
 		const std::size_t primitiveIdx) const
 {
-	return m_model.meshes[meshIdx].primitives[primitiveIdx].indices;
+	return m_model.meshes.at(meshIdx).primitives.at(primitiveIdx).indices;
 }
 
 /**
