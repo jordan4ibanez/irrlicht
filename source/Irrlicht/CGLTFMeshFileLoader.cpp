@@ -532,7 +532,7 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 		const auto scene = sceneOption.value();
 
 		for (int nodeIdx : scene.nodes) {
-			return climbNodeTree(mesh, {}, nodeIdx);
+			climbNodeTree(mesh, {}, nodeIdx);
 		}
 
 	} else if (nodeIdxOption.has_value()) {
@@ -552,24 +552,25 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 
 		const int meshIdx = node.mesh;
 
-		for (std::size_t i = 0; i < getPrimitiveCount(meshIdx); ++i) {
+		// If it doesn't have a mesh, it's probably a bone.
+		if (meshIdx >= 0) {
+			for (std::size_t i = 0; i < getPrimitiveCount(meshIdx); ++i) {
+				auto indices = getIndices(meshIdx, i);
+				auto vertices = getVertices(meshIdx, i, translation);
 
-			auto indices = getIndices(meshIdx, i);
-			auto vertices = getVertices(meshIdx, i, translation);
-
-			SMeshBuffer* meshbuf(new SMeshBuffer {});
-			meshbuf->append(vertices.data(), vertices.size(),
-				indices.data(), indices.size());
-			(*mesh).addMeshBuffer(meshbuf);
-			meshbuf->drop();
-
+				SMeshBuffer* meshbuf(new SMeshBuffer {});
+				meshbuf->append(vertices.data(), vertices.size(),
+					indices.data(), indices.size());
+				(*mesh).addMeshBuffer(meshbuf);
+				meshbuf->drop();
+			}
 		}
 		
 
 		depthPrint(1, nodeIdx);
 		// printf(std::to_string(node.children.size()).append("\n").c_str);
 		for (int childNodeIdx : node.children) {
-			return climbNodeTree(mesh, {}, childNodeIdx);
+			climbNodeTree(mesh, {}, childNodeIdx);
 		}
 	} else {
 		os::Printer::log("EMPTY CLIMB TREE ITERATION!", ELL_ERROR);
