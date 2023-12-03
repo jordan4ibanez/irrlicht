@@ -487,7 +487,7 @@ void CGLTFMeshFileLoader::loadPrimitives(
 
 	const auto scene = parser.getScene();
 
-	parser.climbNodeTree(scene, nullptr);
+	parser.climbNodeTree(scene, std::optional<tinygltf::Node>{});
 
 
 	printf(("number of components" + std::to_string(scene.nodes.size()) + "\n").c_str());
