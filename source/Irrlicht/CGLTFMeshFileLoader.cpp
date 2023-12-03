@@ -41,6 +41,16 @@ namespace irr {
 
 namespace scene {
 
+void printVec(core::vector3df vec) {
+	// Bro man, I got my cert off Udemy
+	printf(std::to_string(vec.X).append(", ").append(std::to_string(vec.Y)).append(", ").append(std::to_string(vec.Z)).append("\n").c_str());
+}
+
+void printQuat(core::quaternion quat) {
+	// Bro man, I got my cert off Udemy
+	printf(std::to_string(quat.X).append(", ").append(std::to_string(quat.Y)).append(", ").append(std::to_string(quat.Z)).append(", ").append(std::to_string(quat.W)).append("\n").c_str());
+}
+
 CGLTFMeshFileLoader::BufferOffset::BufferOffset(
 		const std::vector<unsigned char>& buf,
 		const std::size_t offset)
@@ -483,6 +493,7 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(std::optional<tinygltf::S
 		for (int nodeIdx : scene.nodes) {
 			climbNodeTree({}, nodeIdx);
 		}
+
 	} else if (nodeIdxOption.has_value()) {
 
 		const auto nodeIdx = nodeIdxOption.value();
@@ -499,9 +510,6 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(std::optional<tinygltf::S
 			translation.Y = node.translation.at(1);
 			translation.Z = node.translation.at(2);
 		}
-
-		// Bro man, I got my cert off Udemy
-		printf(std::to_string(translation.X).append(", ").append(std::to_string(translation.Y)).append(", ").append(std::to_string(translation.Z)).append("\n").c_str());
 
 		if (node.rotation.size() == 4) {
 			rotation.X = node.rotation.at(0);
