@@ -254,8 +254,8 @@ core::vector3df CGLTFMeshFileLoader::MeshExtractor::readVec3DF(
 {
 	//? Scale, then rotate, then move (I think?) like in an opengl shader
 
-	printf("input: ");
-	printQuat(rotation);
+	// printf("input: ");
+	// printQuat(rotation);
 
 	// Scale
 	 auto tempVec = core::vector3df(
@@ -267,7 +267,7 @@ core::vector3df CGLTFMeshFileLoader::MeshExtractor::readVec3DF(
 	core::vector3df rotationEuler{0.0f, 0.0f, 0.0f};
 	rotation.toEuler(rotationEuler);
 
-	printVec(rotationEuler);
+	// printVec(rotationEuler);
 
 	// Precise as possible.
 	const double toDeg = 180.000f / core::PI64;
@@ -564,7 +564,7 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 	depth++;
 	if (sceneOption.has_value()) {
 		
-		depthPrint(0, {});
+		// depthPrint(0, {});
 
 		const auto scene = sceneOption.value();
 
@@ -586,7 +586,7 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 		// We are now in the "scope of the node"
 
 		// printVec(translation);
-		printQuat(rotation);
+		// printQuat(rotation);
 		// printVec(scale);
 
 		const int meshIdx = node.mesh;
@@ -607,7 +607,7 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 		}
 		
 
-		depthPrint(1, nodeIdx);
+		// depthPrint(1, nodeIdx);
 		// printf(std::to_string(node.children.size()).append("\n").c_str);
 		for (int childNodeIdx : node.children) {
 			climbNodeTree(mesh, {}, childNodeIdx);
@@ -690,8 +690,8 @@ IAnimatedMesh* CGLTFMeshFileLoader::createMesh(io::IReadFile* file)
 		return nullptr;
 	}
 
-	printf(("\nloading mesh: " + std::string(file->getFileName().c_str())).c_str());
-	printf("\n");
+	// printf(("\nloading mesh: " + std::string(file->getFileName().c_str())).c_str());
+	// printf("\n");
 
 	MeshExtractor parser(std::move(model));
 	SMesh* baseMesh(new SMesh {});
