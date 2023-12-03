@@ -252,12 +252,41 @@ core::vector3df CGLTFMeshFileLoader::MeshExtractor::readVec3DF(
 		const core::quaternion rotation = {0.0f,0.0f,0.0f,1.0f},
 		const core::vector3df scale = {1.0f,1.0f,1.0f})
 {
-	//? Scale, then move (I think?)
-	return core::vector3df(
-		(scale.X * readPrimitive<float>(readFrom)) + translation.X,
-		(scale.Y * readPrimitive<float>(BufferOffset(readFrom, sizeof(float)))) + translation.Y,
-		(-scale.Z * readPrimitive<float>(BufferOffset(readFrom, 2 *
-		sizeof(float)))) + translation.Z);
+	//? Scale, then rotate, then move (I think?) like in an opengl shader
+
+	printf("input: ");
+	printQuat(rotation);
+
+	// Scale
+	 auto tempVec = core::vector3df(
+		(scale.X * readPrimitive<float>(readFrom)),
+		(scale.Y * readPrimitive<float>(BufferOffset(readFrom, sizeof(float)))),
+		(-scale.Z * readPrimitive<float>(BufferOffset(readFrom, 2 * sizeof(float)))));
+
+	// Rotate
+	core::vector3df rotationEuler{0.0f, 0.0f, 0.0f};
+	rotation.toEuler(rotationEuler);
+
+	printVec(rotationEuler);
+
+	// Precise as possible.
+	const double toDeg = 180.000f / core::PI64;
+
+
+	// XYZ cause why not?
+	// * Rotated around the centerpoint which in it currently resides.
+	const core::vector3df centerPoint{0.0f, 0.0f, 0.0f};
+	tempVec.rotateYZBy(rotationEuler.X * toDeg, centerPoint);
+	tempVec.rotateXZBy(rotationEuler.Y * toDeg, centerPoint);
+	tempVec.rotateXYBy(rotationEuler.Z * toDeg, centerPoint);
+
+	// Translate
+	tempVec.X += translation.X;
+	tempVec.Y += translation.Y;
+	tempVec.Z -= translation.Z;
+
+
+	return tempVec;
 }
 
 /**
@@ -280,7 +309,8 @@ void CGLTFMeshFileLoader::MeshExtractor::copyPositions(
 		const auto v = readVec3DF(BufferOffset(buffer,
 			(byteStride * i)), 
 			translation,
-			getScale());
+			rotation,
+			scale);
 		vertices[i].Pos = v;
 	}
 }
@@ -555,9 +585,9 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 
 		// We are now in the "scope of the node"
 
-		printVec(translation);
+		// printVec(translation);
 		printQuat(rotation);
-		printVec(scale);
+		// printVec(scale);
 
 		const int meshIdx = node.mesh;
 
