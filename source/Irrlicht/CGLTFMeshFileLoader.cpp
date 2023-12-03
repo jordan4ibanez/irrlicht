@@ -462,6 +462,12 @@ std::size_t CGLTFMeshFileLoader::MeshExtractor::getTCoordAccessorIdx(
 	}
 }
 
+/**
+ * Extract the TRS of a node into usable vec3fs & a quaternion via reference.
+ * Translation
+ * Rotation
+ * Scale
+*/
 void CGLTFMeshFileLoader::MeshExtractor::getNodeTRS(
 	tinygltf::Node node,
 	core::vector3df &translation,
