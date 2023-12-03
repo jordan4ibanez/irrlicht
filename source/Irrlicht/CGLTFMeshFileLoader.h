@@ -15,6 +15,7 @@
 
 #include <cstddef>
 #include <vector>
+#include <optional>
 
 namespace irr
 {
@@ -78,7 +79,7 @@ private:
 
 		tinygltf::Scene getScene() const;
 
-		void climbNodeTree() const;
+		void climbNodeTree(std::optional<tinygltf::Scene> scene, std::optional<tinygltf::Node> node) const;
 
 	private:
 		tinygltf::Model m_model;

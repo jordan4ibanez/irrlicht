@@ -22,6 +22,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <optional>
 
 /* Notes on the coordinate system.
  *
@@ -454,8 +455,13 @@ std::size_t CGLTFMeshFileLoader::MeshExtractor::getTCoordAccessorIdx(
  * * RECURSIVE ITERATION
  * Climb through the node hierarchy (it is a tree)
 */
-void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree() const {
-
+int depth = 0;
+void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(std::optional<tinygltf::Scene> scene, std::optional<tinygltf::Node> node) const {
+	// if (scene) {
+	// 	printf("this is a scene\n");
+	// } else if (node != nullptr) {
+	// 	printf("this is a node\n");
+	// }
 }
 
 /**
@@ -473,7 +479,6 @@ void CGLTFMeshFileLoader::loadPrimitives(
 	// 	const auto node = parser.getNode(i);
 	// }
 
-
 	if (parser.getSceneCount() <= 0) {
 		os::Printer::log("No scenes in gltf model", ELL_ERROR);
 		// I'm sure not cleaning up memory will have no consequences.
@@ -481,6 +486,9 @@ void CGLTFMeshFileLoader::loadPrimitives(
 	}
 
 	const auto scene = parser.getScene();
+
+	parser.climbNodeTree(scene, nullptr);
+
 
 	printf(("number of components" + std::to_string(scene.nodes.size()) + "\n").c_str());
 
