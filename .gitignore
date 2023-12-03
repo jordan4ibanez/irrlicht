@@ -36,3 +36,6 @@ source/Irrlicht/tests/Testing/Temporary/CTestCostData.txt
 source/Irrlicht/tests/Testing/Temporary/LastTest.log
 Testing/Temporary/CTestCostData.txt
 Testing/Temporary/LastTest.log
+source/lib/tinygltf/cmake/tinygltfConfig.cmake
+source/lib/tinygltf/cmake/tinygltfConfigVersion.cmake
+source/lib/tinygltf/cmake/tinygltfTargets.cmake
