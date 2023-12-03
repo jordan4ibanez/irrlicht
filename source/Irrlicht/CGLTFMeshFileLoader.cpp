@@ -450,13 +450,12 @@ std::size_t CGLTFMeshFileLoader::MeshExtractor::getTCoordAccessorIdx(
 }
 
 /**
- * ! THIS IS DEBUGGING AND SHOULD BE PART OF A METHOD OR SOMETHING.
  * ? PURE FUNCTIONAL
  * * RECURSIVE ITERATION
  * Climb through the node hierarchy (it is a tree)
 */
 void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree() const {
-	
+
 }
 
 /**
