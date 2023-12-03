@@ -24,6 +24,7 @@
 #include <utility>
 #include <vector>
 #include <optional>
+#include <iostream>
 
 /* Notes on the coordinate system.
  *
