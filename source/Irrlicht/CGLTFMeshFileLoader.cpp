@@ -505,8 +505,12 @@ void depthPrint(bool sceneOrNode, std::optional<int> nodeID) {
 	accum += sceneOrNode ? "-> Node " + std::to_string(nodeValue) : "Scene";
 	accum += '\n';
 	printf(accum.c_str());
-}
-void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(std::optional<tinygltf::Scene> sceneOption, std::optional<int> nodeIdxOption) const {
+} //! Don't put a space here this is one giant mess for now!
+void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
+	SMesh* mesh,
+	std::optional<tinygltf::Scene> sceneOption,
+	std::optional<int> nodeIdxOption
+) const {
 	depth++;
 	if (sceneOption.has_value()) {
 		
@@ -515,7 +519,7 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(std::optional<tinygltf::S
 		const auto scene = sceneOption.value();
 
 		for (int nodeIdx : scene.nodes) {
-			climbNodeTree({}, nodeIdx);
+			climbNodeTree(mesh, {}, nodeIdx);
 		}
 
 	} else if (nodeIdxOption.has_value()) {
@@ -532,10 +536,26 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(std::optional<tinygltf::S
 
 		printVec(translation);
 
+		const int meshIdx = node.mesh;
+
+		for (std::size_t j = 0; j < getPrimitiveCount(meshIdx); ++j) {
+
+			auto indices = getIndices(meshIdx, j);
+			auto vertices = getVertices(meshIdx, j);
+
+			SMeshBuffer* meshbuf(new SMeshBuffer {});
+			meshbuf->append(vertices.data(), vertices.size(),
+				indices.data(), indices.size());
+			(*mesh).addMeshBuffer(meshbuf);
+			meshbuf->drop();
+
+		}
+		
+
 		depthPrint(1, nodeIdx);
 		// printf(std::to_string(node.children.size()).append("\n").c_str);
 		for (int childNodeIdx : node.children) {
-			climbNodeTree({}, childNodeIdx);
+			climbNodeTree(mesh, {}, childNodeIdx);
 		}
 	} else {
 		os::Printer::log("EMPTY CLIMB TREE ITERATION!", ELL_ERROR);
@@ -566,24 +586,11 @@ void CGLTFMeshFileLoader::loadPrimitives(
 
 	const auto scene = parser.getScene();
 
-	parser.climbNodeTree(scene, {});
+	parser.climbNodeTree(mesh,scene, {});
 
 
-	printf(("number of components" + std::to_string(scene.nodes.size()) + "\n").c_str());
+	// printf(("number of components" + std::to_string(scene.nodes.size()) + "\n").c_str());
 
-
-	for (std::size_t i = 0; i < parser.getMeshCount(); ++i) {
-		for (std::size_t j = 0; j < parser.getPrimitiveCount(i); ++j) {
-			auto indices = parser.getIndices(i, j);
-			auto vertices = parser.getVertices(i, j);
-
-			SMeshBuffer* meshbuf(new SMeshBuffer {});
-			meshbuf->append(vertices.data(), vertices.size(),
-				indices.data(), indices.size());
-			mesh->addMeshBuffer(meshbuf);
-			meshbuf->drop();
-		}
-	}
 }
 
 /**

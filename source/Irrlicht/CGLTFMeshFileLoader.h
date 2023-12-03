@@ -80,7 +80,11 @@ private:
 
 		tinygltf::Scene getScene() const;
 
-		void climbNodeTree(std::optional<tinygltf::Scene> sceneOption, std::optional<int> nodeIdxOption) const;
+		void climbNodeTree(
+			SMesh* mesh,
+			std::optional<tinygltf::Scene> sceneOption,
+			std::optional<int> nodeIdxOption
+		) const;
 
 	private:
 		tinygltf::Model m_model;
