@@ -1,7 +1,7 @@
 #include "CGLTFMeshFileLoader.h"
 #include "CMeshBuffer.h"
 #include "coreutil.h"
-#include "IAnimatedMesh.h"
+#include "CSkinnedMesh.h"
 #include "ILogger.h"
 #include "IReadFile.h"
 #include "irrTypes.h"
@@ -612,7 +612,7 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 					indices.data(), indices.size());
 				(*mesh).addMeshBuffer(meshbuf);
 				meshbuf->drop();
-				
+
 			}
 		}
 		
@@ -694,7 +694,7 @@ bool CGLTFMeshFileLoader::tryParseGLTF(io::IReadFile* file,
 /**
  * Entry point into loading a GLTF model.
 */
-IAnimatedMesh* CGLTFMeshFileLoader::createMesh(io::IReadFile* file)
+CSkinnedMesh* CGLTFMeshFileLoader::createMesh(io::IReadFile* file)
 {
 	tinygltf::Model model {};
 

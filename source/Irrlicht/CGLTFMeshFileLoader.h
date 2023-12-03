@@ -1,7 +1,7 @@
 #ifndef __C_GLTF_MESH_FILE_LOADER_INCLUDED__
 #define __C_GLTF_MESH_FILE_LOADER_INCLUDED__
 
-#include "IAnimatedMesh.h"
+#include "CSkinnedMesh.h"
 #include "IMeshLoader.h"
 #include "IReadFile.h"
 #include "irrTypes.h"
@@ -31,7 +31,7 @@ public:
 
 	bool isALoadableFileExtension(const io::path& filename) const override;
 
-	IAnimatedMesh* createMesh(io::IReadFile* file) override;
+	CSkinnedMesh* createMesh(io::IReadFile* file) override;
 
 private:
 	class BufferOffset
