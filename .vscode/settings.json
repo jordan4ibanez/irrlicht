@@ -2,6 +2,7 @@
     "files.associations": {
 			"*.tcc": "cpp",
 			"iomanip": "cpp",
-			"optional": "cpp"
+			"optional": "cpp",
+			"any": "cpp"
 		}
 }
