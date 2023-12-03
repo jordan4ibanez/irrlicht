@@ -130,13 +130,15 @@ std::vector<u16> CGLTFMeshFileLoader::MeshExtractor::getIndices(
 */
 std::vector<video::S3DVertex> CGLTFMeshFileLoader::MeshExtractor::getVertices(
 		const std::size_t meshIdx,
-		const std::size_t primitiveIdx) const
-{
+		const std::size_t primitiveIdx,
+		const core::vector3df translation		
+) const {
+
 	const auto positionAccessorIdx = getPositionAccessorIdx(
 			meshIdx, primitiveIdx);
 	std::vector<vertex_t> vertices{};
 	vertices.resize(getElemCount(positionAccessorIdx));
-	copyPositions(positionAccessorIdx, vertices);
+	copyPositions(positionAccessorIdx, vertices, translation);
 
 	const auto normalAccessorIdx = getNormalAccessorIdx(
 			meshIdx, primitiveIdx);
@@ -242,13 +244,15 @@ core::vector2df CGLTFMeshFileLoader::MeshExtractor::readVec2DF(
 */
 core::vector3df CGLTFMeshFileLoader::MeshExtractor::readVec3DF(
 		const BufferOffset& readFrom,
+		const core::vector3df translation = {0.0f,0.0f,0.0f},
 		const core::vector3df scale = {1.0f,1.0f,1.0f})
 {
+	//? Scale, then move (I think?)
 	return core::vector3df(
-		scale.X * readPrimitive<float>(readFrom),
-		scale.Y * readPrimitive<float>(BufferOffset(readFrom, sizeof(float))),
-		-scale.Z * readPrimitive<float>(BufferOffset(readFrom, 2 *
-		sizeof(float))));
+		(scale.X * readPrimitive<float>(readFrom)) + translation.X,
+		(scale.Y * readPrimitive<float>(BufferOffset(readFrom, sizeof(float)))) + translation.Y,
+		(-scale.Z * readPrimitive<float>(BufferOffset(readFrom, 2 *
+		sizeof(float)))) + translation.Z);
 }
 
 /**
@@ -257,7 +261,8 @@ core::vector3df CGLTFMeshFileLoader::MeshExtractor::readVec3DF(
 */
 void CGLTFMeshFileLoader::MeshExtractor::copyPositions(
 		const std::size_t accessorIdx,
-		std::vector<vertex_t>& vertices) const
+		std::vector<vertex_t>& vertices,
+		const core::vector3df translation) const 
 {
 
 	const auto& buffer = getBuffer(accessorIdx);
@@ -266,7 +271,9 @@ void CGLTFMeshFileLoader::MeshExtractor::copyPositions(
 
 	for (std::size_t i = 0; i < count; i++) {
 		const auto v = readVec3DF(BufferOffset(buffer,
-			(byteStride * i)), getScale());
+			(byteStride * i)), 
+			translation,
+			getScale());
 		vertices[i].Pos = v;
 	}
 }
@@ -534,11 +541,12 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 		const auto node = m_model.nodes.at(nodeIdx);
 
 		//TRS
-		core::vector3df translation{0.0f, 0.0f, 0.0f};
-		core::quaternion rotation{0.0f, 0.0f, 0.0f, 1.0f};
-		core::vector3df scale{1.0f, 1.0f, 1.0f};
+		core::vector3df *translation = new core::vector3df(0.0f, 0.0f, 0.0f);
+		core::quaternion *rotation = new core::quaternion(0.0f, 0.0f, 0.0f, 1.0f);
+		core::vector3df *scale = new core::vector3df(1.0f, 1.0f, 1.0f);
 		getNodeTRS(node, translation, rotation, scale);
 
+		// We are now in the "scope of the node"
 
 		printVec(translation);
 
@@ -547,7 +555,7 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 		for (std::size_t j = 0; j < getPrimitiveCount(meshIdx); ++j) {
 
 			auto indices = getIndices(meshIdx, j);
-			auto vertices = getVertices(meshIdx, j);
+			auto vertices = getVertices(meshIdx, j, translation);
 
 			SMeshBuffer* meshbuf(new SMeshBuffer {});
 			meshbuf->append(vertices.data(), vertices.size(),

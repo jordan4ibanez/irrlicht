@@ -65,8 +65,12 @@ private:
 		std::vector<u16> getIndices(const std::size_t meshIdx,
 				const std::size_t primitiveIdx) const;
 
-		std::vector<vertex_t> getVertices(std::size_t meshIdx,
-				const std::size_t primitiveIdx) const;
+		std::vector<vertex_t> getVertices(
+				std::size_t meshIdx,
+				const std::size_t primitiveIdx,
+				const core::vector3df translation
+				
+		) const;
 
 		std::size_t getMeshCount() const;
 
@@ -101,10 +105,12 @@ private:
 		 */
 		static core::vector3df readVec3DF(
 				const BufferOffset& readFrom,
+				const core::vector3df translation,
 				const core::vector3df scale);
 
 		void copyPositions(const std::size_t accessorIdx,
-				std::vector<vertex_t>& vertices) const;
+				std::vector<vertex_t>& vertices,
+				const core::vector3df translation) const;
 
 		void copyNormals(const std::size_t accessorIdx,
 				std::vector<vertex_t>& vertices) const;
