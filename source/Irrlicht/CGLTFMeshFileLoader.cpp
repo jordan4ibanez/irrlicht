@@ -13,6 +13,7 @@
 #include "SMesh.h"
 #include "vector3d.h"
 #include "quaternion.h"
+#include "irrMath.h"
 
 #define TINYGLTF_IMPLEMENTATION
 #include <tiny_gltf.h>
