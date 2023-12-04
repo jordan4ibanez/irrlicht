@@ -711,7 +711,7 @@ CSkinnedMesh* CGLTFMeshFileLoader::createMesh(io::IReadFile* file)
 	// SMesh* baseMesh(new SMesh {});
 
 	CSkinnedMesh* animatedMesh(new scene::CSkinnedMesh());
-	scene::SSkinMeshBuffer *meshBuffer = animatedMesh->addMeshBuffer();
+	// scene::SSkinMeshBuffer *meshBuffer = animatedMesh->addMeshBuffer();
 	
 	loadPrimitives(parser, animatedMesh);
 
