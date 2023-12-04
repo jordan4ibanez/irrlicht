@@ -635,7 +635,7 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 */
 void CGLTFMeshFileLoader::loadPrimitives(
 		const MeshExtractor& parser,
-		SMesh* mesh)
+		scene::SSkinMeshBuffer* mesh)
 {
 
 	// for (std::size_t i = 0; i < parser.getNodeCount(); i++) {
@@ -708,12 +708,15 @@ CSkinnedMesh* CGLTFMeshFileLoader::createMesh(io::IReadFile* file)
 	printf(("| depth graph for: " + std::string(file->getFileName().c_str()) + " |\n").c_str());
 
 	MeshExtractor parser(std::move(model));
-	SMesh* baseMesh(new SMesh {});
-	loadPrimitives(parser, baseMesh);
+	// SMesh* baseMesh(new SMesh {});
 
-	SAnimatedMesh* animatedMesh(new SAnimatedMesh {});
-	animatedMesh->addMesh(baseMesh);
-	baseMesh->drop();
+	CSkinnedMesh* animatedMesh(new scene::CSkinnedMesh());
+	scene::SSkinMeshBuffer *meshBuffer = animatedMesh->addMeshBuffer();
+	
+	loadPrimitives(parser, animatedMesh);
+
+	animatedMesh->finalize();
+	animatedMesh->drop();
 
 	return animatedMesh;
 }

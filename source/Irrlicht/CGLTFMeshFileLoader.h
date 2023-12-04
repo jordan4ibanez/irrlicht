@@ -166,7 +166,7 @@ private:
 		) const;
 	};
 
-	void loadPrimitives(const MeshExtractor& parser, SMesh* mesh);
+	void loadPrimitives(const MeshExtractor& parser, scene::SSkinMeshBuffer* mesh);
 
 	static bool tryParseGLTF(io::IReadFile* file,
 			tinygltf::Model& model);
