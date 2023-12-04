@@ -86,7 +86,7 @@ private:
 		tinygltf::Scene getScene() const;
 
 		void climbNodeTree(
-			SMesh* mesh,
+			CSkinnedMesh* mesh,
 			std::optional<tinygltf::Scene> sceneOption,
 			std::optional<int> nodeIdxOption
 		) const;
@@ -167,7 +167,7 @@ private:
 	};
 
 	void loadPrimitives(const MeshExtractor& parser, 
-			scene::SSkinMeshBuffer* mesh);
+			CSkinnedMesh* mesh);
 
 	static bool tryParseGLTF(io::IReadFile* file,
 			tinygltf::Model& model);

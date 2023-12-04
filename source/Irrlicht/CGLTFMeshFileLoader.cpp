@@ -557,7 +557,7 @@ void depthPrint(bool sceneOrNode, std::optional<int> nodeID) {
 	printf(accum.c_str());
 } //! Don't put a space here this is one giant mess for now!
 void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
-	SMesh* mesh,
+	CSkinnedMesh* mesh,
 	std::optional<tinygltf::Scene> sceneOption,
 	std::optional<int> nodeIdxOption
 ) const {
@@ -607,11 +607,14 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 				auto vertices = getVertices(
 					meshIdx, i, translation, rotation, scale);
 
-				SSkinMeshBuffer* meshbuf(new SSkinMeshBuffer {});
-				meshbuf->append(vertices.data(), vertices.size(),
-					indices.data(), indices.size());
-				(*mesh).addMeshBuffer(meshbuf);
-				meshbuf->drop();
+				scene::SSkinMeshBuffer *buffer = mesh->addMeshBuffer();
+
+				buffer->Indices = std::move(indices);
+				buffer->Vertices_Standard = std::move(vertices);
+				buffer->setDirty();
+
+
+				printf(("primcount: " + std::to_string(buffer->getPrimitiveCount()) + "\n").c_str());
 
 			}
 		}
@@ -635,7 +638,7 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 */
 void CGLTFMeshFileLoader::loadPrimitives(
 		const MeshExtractor& parser,
-		scene::SSkinMeshBuffer* mesh)
+		CSkinnedMesh* mesh)
 {
 
 	// for (std::size_t i = 0; i < parser.getNodeCount(); i++) {
@@ -710,13 +713,13 @@ CSkinnedMesh* CGLTFMeshFileLoader::createMesh(io::IReadFile* file)
 	MeshExtractor parser(std::move(model));
 	// SMesh* baseMesh(new SMesh {});
 
-	CSkinnedMesh* animatedMesh(new scene::CSkinnedMesh());
-	// scene::SSkinMeshBuffer *meshBuffer = animatedMesh->addMeshBuffer();
+	CSkinnedMesh* animatedMesh(new CSkinnedMesh());
 	
 	loadPrimitives(parser, animatedMesh);
 
 	animatedMesh->finalize();
-	animatedMesh->drop();
+	//! DO NOT DROP THIS, this is kept as a reminder!
+	// animatedMesh->drop();
 
 	return animatedMesh;
 }
