@@ -607,7 +607,7 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 				auto vertices = getVertices(
 					meshIdx, i, translation, rotation, scale);
 
-				SMeshBuffer* meshbuf(new SMeshBuffer {});
+				SSkinMeshBuffer* meshbuf(new SSkinMeshBuffer {});
 				meshbuf->append(vertices.data(), vertices.size(),
 					indices.data(), indices.size());
 				(*mesh).addMeshBuffer(meshbuf);
