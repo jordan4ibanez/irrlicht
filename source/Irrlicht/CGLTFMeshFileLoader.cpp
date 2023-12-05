@@ -536,42 +536,14 @@ void CGLTFMeshFileLoader::MeshExtractor::getNodeTRS(
 	}
 }
 
-/**
- * ? PURE FUNCTIONAL
- * * RECURSIVE ITERATION
- * Climb through the node hierarchy (it is a tree)
-*/
-int depth = -1;
-void depthPrint(bool sceneOrNode, std::optional<int> nodeID) {
-
-	std::string accum = "";
-	for (int i = 0; i < depth; i++) {
-		accum += "  ";
-	}
-	int nodeValue = 0;
-	if (nodeID.has_value()) {
-		nodeValue = nodeID.value();
-	}
-	accum += sceneOrNode ? "-> Node " + std::to_string(nodeValue) : "Scene";
-	accum += '\n';
-	printf(accum.c_str());
-} //! Don't put a space here this is one giant mess for now!
 void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 	CSkinnedMesh* mesh,
 	std::optional<tinygltf::Scene> sceneOption,
 	std::optional<int> nodeIdxOption
 ) const {
-	depth++;
 	if (sceneOption.has_value()) {
-		
-		depthPrint(0, {});
 
 		const auto scene = sceneOption.value();
-
-		printf(("animation count: " + std::to_string(m_model.animations.size()) + "\n").c_str());
-		if (isAnimated()) {
-			printf("I'm animated yay!\n");
-		}
 
 		for (int nodeIdx : scene.nodes) {
 			climbNodeTree(mesh, {}, nodeIdx);
@@ -588,17 +560,10 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 		core::vector3df scale{1.0f, 1.0f, 1.0f};
 		getNodeTRS(node, translation, rotation, scale);
 
-		// We are now in the "scope of the node"
-
-		// printVec(translation);
-		// printQuat(rotation);
-		// printVec(scale);
+		// We are now in the "scope of the node".
 
 		const int skinIdx = node.skin;
 		const int meshIdx = node.mesh;
-
-		printf(("skin is: " + std::to_string(skinIdx) + "\n").c_str());
-		printf(("mesh is: " + std::to_string(meshIdx) + "\n").c_str());
 
 		// If it doesn't have a mesh, it's probably a bone.
 		if (meshIdx >= 0) {
@@ -612,23 +577,15 @@ void CGLTFMeshFileLoader::MeshExtractor::climbNodeTree(
 				buffer->Indices = std::move(indices);
 				buffer->Vertices_Standard = std::move(vertices);
 				buffer->setDirty();
-
-
-				printf(("primcount: " + std::to_string(buffer->getPrimitiveCount()) + "\n").c_str());
-
 			}
 		}
-		
-
-		depthPrint(1, nodeIdx);
-		// printf(std::to_string(node.children.size()).append("\n").c_str);
+	
 		for (int childNodeIdx : node.children) {
 			climbNodeTree(mesh, {}, childNodeIdx);
 		}
 	} else {
 		os::Printer::log("EMPTY CLIMB TREE ITERATION!", ELL_ERROR);
 	}
-	depth--;
 }
 
 /**
@@ -705,19 +662,14 @@ CSkinnedMesh* CGLTFMeshFileLoader::createMesh(io::IReadFile* file)
 		return nullptr;
 	}
 
-	// printf(("\nloading mesh: " + std::string(file->getFileName().c_str())).c_str());
-	// printf("\n");
-
-	printf(("| depth graph for: " + std::string(file->getFileName().c_str()) + " |\n").c_str());
-
 	MeshExtractor parser(std::move(model));
-	// SMesh* baseMesh(new SMesh {});
 
 	CSkinnedMesh* animatedMesh(new CSkinnedMesh());
 	
 	loadPrimitives(parser, animatedMesh);
 
 	animatedMesh->finalize();
+
 	//! DO NOT DROP THIS, this is kept as a reminder!
 	// animatedMesh->drop();
 
