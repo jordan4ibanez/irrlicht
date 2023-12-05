@@ -313,8 +313,8 @@ TEST_CASE("snowman TRS") {
 	REQUIRE(sm.getMesh()->getMeshBufferCount() == MESH_BUFFER_COUNT);
 	srand(time(nullptr));
 
-		// Overflows automatically.
-		uint i = -1;
+	// Overflows automatically.
+	uint i = -1;
 	SECTION("vertex coordinates are correct for all buffers") {
 
 		i++;
