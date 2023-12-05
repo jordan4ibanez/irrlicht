@@ -317,6 +317,8 @@ TEST_CASE("snowman TRS") {
 	uint i = -1;
 	SECTION("vertex coordinates are correct for all buffers") {
 
+		//? note: This was generated off a known good model loaded up in memory.
+
 		i++;
 		REQUIRE(sm.getMesh()->getMeshBuffer(i)->getVertexCount() == ARRAY_SIZE);
 		const auto* vertices = reinterpret_cast<irr::video::S3DVertex*>(
