@@ -305,16 +305,6 @@ TEST_CASE("snow man") {
 }
 
 // Docs: https://github.com/catchorg/Catch2/blob/devel/docs/comparing-floating-point-numbers.md#floating-point-matchers
-void CHECK_VECTOR3DF(irr::core::vector3df input, irr::core::vector3df check) {
-	REQUIRE_THAT(input.X,Catch::Matchers::WithinAbs(check.X, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
-
-	REQUIRE_THAT(input.Y,
-		Catch::Matchers::WithinAbs(check.Y, 0.0001f) ||
-		Catch::Matchers::WithinAbs(0, 0.000001));
-	REQUIRE_THAT(input.Z,
-		Catch::Matchers::WithinAbs(check.Z, 0.0001f) ||
-		Catch::Matchers::WithinAbs(0, 0.000001));
-}
 TEST_CASE("snowman TRS") {
 	ScopedMesh sm("source/Irrlicht/tests/assets/snowman_trs.gltf");
 	REQUIRE(sm.getMesh() != nullptr);
