@@ -11,6 +11,8 @@
 
 using namespace std;
 
+const float FLOAT_PRECISION = 0.0001f;
+
 class ScopedMesh
 {
 public:
@@ -302,4 +304,245 @@ TEST_CASE("snow man") {
 		CHECK(vertices[20].TCoords == irr::core::vector2df{0.208333, 0.416667});
 		CHECK(vertices[22].TCoords == irr::core::vector2df{0.375, 0.416667});
 	}
+}
+
+// Docs: https://github.com/catchorg/Catch2/blob/devel/docs/comparing-floating-point-numbers.md#floating-point-matchers
+void CHECK_VECTOR3DF(irr::core::vector3df input, irr::core::vector3df check) {
+	REQUIRE_THAT(input.X,Catch::Matchers::WithinAbs(check.X, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+
+	REQUIRE_THAT(input.Y,
+		Catch::Matchers::WithinAbs(check.Y, 0.0001f) ||
+		Catch::Matchers::WithinAbs(0, 0.000001));
+	REQUIRE_THAT(input.Z,
+		Catch::Matchers::WithinAbs(check.Z, 0.0001f) ||
+		Catch::Matchers::WithinAbs(0, 0.000001));
+}
+TEST_CASE("snowman TRS") {
+    ScopedMesh sm("source/Irrlicht/tests/assets/snowman_trs.gltf");
+    REQUIRE(sm.getMesh() != nullptr);
+    const uint MESH_BUFFER_COUNT = 5;
+    const uint ARRAY_SIZE = 24;
+    REQUIRE(sm.getMesh()->getMeshBufferCount() == MESH_BUFFER_COUNT);
+    srand(time(nullptr));
+
+		// Overflows automatically.
+		uint i = -1;
+    SECTION("vertex coordinates are correct for all buffers") {
+
+				i++;
+				REQUIRE(sm.getMesh()->getMeshBuffer(i)->getVertexCount() == ARRAY_SIZE);
+				const auto* vertices = reinterpret_cast<irr::video::S3DVertex*>(
+					sm.getMesh()->getMeshBuffer(i)->getVertices());
+				
+				// Auto generated test for mesh buffer 0.
+				REQUIRE_THAT(vertices[0].Pos.X,Catch::Matchers::WithinAbs(1.25, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[0].Pos.Y,Catch::Matchers::WithinAbs(12.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[0].Pos.Z,Catch::Matchers::WithinAbs(-1.25, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[2].Pos.X,Catch::Matchers::WithinAbs(1.25, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[2].Pos.Y,Catch::Matchers::WithinAbs(10, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[2].Pos.Z,Catch::Matchers::WithinAbs(-1.25, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[4].Pos.X,Catch::Matchers::WithinAbs(-1.25, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[4].Pos.Y,Catch::Matchers::WithinAbs(12.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[4].Pos.Z,Catch::Matchers::WithinAbs(1.25, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[7].Pos.X,Catch::Matchers::WithinAbs(-1.25, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[7].Pos.Y,Catch::Matchers::WithinAbs(10, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[7].Pos.Z,Catch::Matchers::WithinAbs(-1.25, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[9].Pos.X,Catch::Matchers::WithinAbs(1.25, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[9].Pos.Y,Catch::Matchers::WithinAbs(12.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[9].Pos.Z,Catch::Matchers::WithinAbs(1.25, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[12].Pos.X,Catch::Matchers::WithinAbs(-1.25, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[12].Pos.Y,Catch::Matchers::WithinAbs(10, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[12].Pos.Z,Catch::Matchers::WithinAbs(-1.25, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[15].Pos.X,Catch::Matchers::WithinAbs(1.25, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[15].Pos.Y,Catch::Matchers::WithinAbs(10, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[15].Pos.Z,Catch::Matchers::WithinAbs(1.25, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[18].Pos.X,Catch::Matchers::WithinAbs(-1.25, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[18].Pos.Y,Catch::Matchers::WithinAbs(10, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[18].Pos.Z,Catch::Matchers::WithinAbs(-1.25, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[21].Pos.X,Catch::Matchers::WithinAbs(-1.25, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[21].Pos.Y,Catch::Matchers::WithinAbs(12.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[21].Pos.Z,Catch::Matchers::WithinAbs(1.25, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[23].Pos.X,Catch::Matchers::WithinAbs(-1.25, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[23].Pos.Y,Catch::Matchers::WithinAbs(10, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[23].Pos.Z,Catch::Matchers::WithinAbs(1.25, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+
+				i++;
+				REQUIRE(sm.getMesh()->getMeshBuffer(i)->getVertexCount() == ARRAY_SIZE);
+				vertices = reinterpret_cast<irr::video::S3DVertex*>(
+					sm.getMesh()->getMeshBuffer(i)->getVertices());
+
+				// Auto generated test for mesh buffer 1.
+				REQUIRE_THAT(vertices[0].Pos.X,Catch::Matchers::WithinAbs(1.63397, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[0].Pos.Y,Catch::Matchers::WithinAbs(8.86602, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[0].Pos.Z,Catch::Matchers::WithinAbs(-0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[3].Pos.X,Catch::Matchers::WithinAbs(2.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[3].Pos.Y,Catch::Matchers::WithinAbs(9.36602, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[3].Pos.Z,Catch::Matchers::WithinAbs(0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[4].Pos.X,Catch::Matchers::WithinAbs(3.63397, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[4].Pos.Y,Catch::Matchers::WithinAbs(5.40192, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[4].Pos.Z,Catch::Matchers::WithinAbs(0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[5].Pos.X,Catch::Matchers::WithinAbs(3.63397, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[5].Pos.Y,Catch::Matchers::WithinAbs(5.40192, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[5].Pos.Z,Catch::Matchers::WithinAbs(-0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[6].Pos.X,Catch::Matchers::WithinAbs(4.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[6].Pos.Y,Catch::Matchers::WithinAbs(5.90192, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[6].Pos.Z,Catch::Matchers::WithinAbs(0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[8].Pos.X,Catch::Matchers::WithinAbs(3.63397, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[8].Pos.Y,Catch::Matchers::WithinAbs(5.40192, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[8].Pos.Z,Catch::Matchers::WithinAbs(0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[10].Pos.X,Catch::Matchers::WithinAbs(3.63397, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[10].Pos.Y,Catch::Matchers::WithinAbs(5.40192, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[10].Pos.Z,Catch::Matchers::WithinAbs(-0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[12].Pos.X,Catch::Matchers::WithinAbs(4.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[12].Pos.Y,Catch::Matchers::WithinAbs(5.90192, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[12].Pos.Z,Catch::Matchers::WithinAbs(-0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[13].Pos.X,Catch::Matchers::WithinAbs(2.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[13].Pos.Y,Catch::Matchers::WithinAbs(9.36602, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[13].Pos.Z,Catch::Matchers::WithinAbs(-0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[14].Pos.X,Catch::Matchers::WithinAbs(4.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[14].Pos.Y,Catch::Matchers::WithinAbs(5.90192, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[14].Pos.Z,Catch::Matchers::WithinAbs(0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[16].Pos.X,Catch::Matchers::WithinAbs(3.63397, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[16].Pos.Y,Catch::Matchers::WithinAbs(5.40192, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[16].Pos.Z,Catch::Matchers::WithinAbs(-0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[19].Pos.X,Catch::Matchers::WithinAbs(2.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[19].Pos.Y,Catch::Matchers::WithinAbs(9.36602, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[19].Pos.Z,Catch::Matchers::WithinAbs(-0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[21].Pos.X,Catch::Matchers::WithinAbs(3.63397, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[21].Pos.Y,Catch::Matchers::WithinAbs(5.40192, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[21].Pos.Z,Catch::Matchers::WithinAbs(0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[22].Pos.X,Catch::Matchers::WithinAbs(2.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[22].Pos.Y,Catch::Matchers::WithinAbs(9.36602, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[22].Pos.Z,Catch::Matchers::WithinAbs(0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+
+				i++;
+				REQUIRE(sm.getMesh()->getMeshBuffer(i)->getVertexCount() == ARRAY_SIZE);
+				vertices = reinterpret_cast<irr::video::S3DVertex*>(
+					sm.getMesh()->getMeshBuffer(i)->getVertices());
+
+				// Auto generated test for mesh buffer 2.
+				REQUIRE_THAT(vertices[0].Pos.X,Catch::Matchers::WithinAbs(-1.36931, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[0].Pos.Y,Catch::Matchers::WithinAbs(8.80609, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[0].Pos.Z,Catch::Matchers::WithinAbs(-0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[3].Pos.X,Catch::Matchers::WithinAbs(-1.90661, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[3].Pos.Y,Catch::Matchers::WithinAbs(7.9627, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[3].Pos.Z,Catch::Matchers::WithinAbs(0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[5].Pos.X,Catch::Matchers::WithinAbs(-4.74287, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[5].Pos.Y,Catch::Matchers::WithinAbs(10.9553, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[5].Pos.Z,Catch::Matchers::WithinAbs(-0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[7].Pos.X,Catch::Matchers::WithinAbs(-5.28017, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[7].Pos.Y,Catch::Matchers::WithinAbs(10.1119, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[7].Pos.Z,Catch::Matchers::WithinAbs(-0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[9].Pos.X,Catch::Matchers::WithinAbs(-1.36931, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[9].Pos.Y,Catch::Matchers::WithinAbs(8.80609, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[9].Pos.Z,Catch::Matchers::WithinAbs(0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[12].Pos.X,Catch::Matchers::WithinAbs(-5.28017, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[12].Pos.Y,Catch::Matchers::WithinAbs(10.1119, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[12].Pos.Z,Catch::Matchers::WithinAbs(-0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[13].Pos.X,Catch::Matchers::WithinAbs(-1.90661, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[13].Pos.Y,Catch::Matchers::WithinAbs(7.9627, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[13].Pos.Z,Catch::Matchers::WithinAbs(-0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[16].Pos.X,Catch::Matchers::WithinAbs(-4.74287, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[16].Pos.Y,Catch::Matchers::WithinAbs(10.9553, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[16].Pos.Z,Catch::Matchers::WithinAbs(-0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[18].Pos.X,Catch::Matchers::WithinAbs(-5.28017, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[18].Pos.Y,Catch::Matchers::WithinAbs(10.1119, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[18].Pos.Z,Catch::Matchers::WithinAbs(-0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[19].Pos.X,Catch::Matchers::WithinAbs(-1.90661, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[19].Pos.Y,Catch::Matchers::WithinAbs(7.9627, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[19].Pos.Z,Catch::Matchers::WithinAbs(-0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[21].Pos.X,Catch::Matchers::WithinAbs(-4.74287, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[21].Pos.Y,Catch::Matchers::WithinAbs(10.9553, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[21].Pos.Z,Catch::Matchers::WithinAbs(0.5, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+
+				i++;
+				REQUIRE(sm.getMesh()->getMeshBuffer(i)->getVertexCount() == ARRAY_SIZE);
+				vertices = reinterpret_cast<irr::video::S3DVertex*>(
+					sm.getMesh()->getMeshBuffer(i)->getVertices());
+
+				// Auto generated test for mesh buffer 3.
+				REQUIRE_THAT(vertices[0].Pos.X,Catch::Matchers::WithinAbs(2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[0].Pos.Y,Catch::Matchers::WithinAbs(10, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[0].Pos.Z,Catch::Matchers::WithinAbs(-2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[1].Pos.X,Catch::Matchers::WithinAbs(2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[1].Pos.Y,Catch::Matchers::WithinAbs(10, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[1].Pos.Z,Catch::Matchers::WithinAbs(2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[3].Pos.X,Catch::Matchers::WithinAbs(2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[3].Pos.Y,Catch::Matchers::WithinAbs(6, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[3].Pos.Z,Catch::Matchers::WithinAbs(2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[6].Pos.X,Catch::Matchers::WithinAbs(-2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[6].Pos.Y,Catch::Matchers::WithinAbs(6, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[6].Pos.Z,Catch::Matchers::WithinAbs(2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[9].Pos.X,Catch::Matchers::WithinAbs(2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[9].Pos.Y,Catch::Matchers::WithinAbs(10, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[9].Pos.Z,Catch::Matchers::WithinAbs(2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[11].Pos.X,Catch::Matchers::WithinAbs(2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[11].Pos.Y,Catch::Matchers::WithinAbs(10, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[11].Pos.Z,Catch::Matchers::WithinAbs(-2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[12].Pos.X,Catch::Matchers::WithinAbs(-2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[12].Pos.Y,Catch::Matchers::WithinAbs(6, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[12].Pos.Z,Catch::Matchers::WithinAbs(-2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[14].Pos.X,Catch::Matchers::WithinAbs(-2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[14].Pos.Y,Catch::Matchers::WithinAbs(6, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[14].Pos.Z,Catch::Matchers::WithinAbs(2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[17].Pos.X,Catch::Matchers::WithinAbs(2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[17].Pos.Y,Catch::Matchers::WithinAbs(10, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[17].Pos.Z,Catch::Matchers::WithinAbs(-2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[19].Pos.X,Catch::Matchers::WithinAbs(2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[19].Pos.Y,Catch::Matchers::WithinAbs(6, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[19].Pos.Z,Catch::Matchers::WithinAbs(-2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[21].Pos.X,Catch::Matchers::WithinAbs(-2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[21].Pos.Y,Catch::Matchers::WithinAbs(10, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[21].Pos.Z,Catch::Matchers::WithinAbs(2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[23].Pos.X,Catch::Matchers::WithinAbs(-2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[23].Pos.Y,Catch::Matchers::WithinAbs(6, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[23].Pos.Z,Catch::Matchers::WithinAbs(2, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+
+				i++;
+				REQUIRE(sm.getMesh()->getMeshBuffer(i)->getVertexCount() == ARRAY_SIZE);
+				vertices = reinterpret_cast<irr::video::S3DVertex*>(
+					sm.getMesh()->getMeshBuffer(i)->getVertices());
+
+				// Auto generated test for mesh buffer 4.
+				REQUIRE_THAT(vertices[0].Pos.X,Catch::Matchers::WithinAbs(3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[0].Pos.Y,Catch::Matchers::WithinAbs(6, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[0].Pos.Z,Catch::Matchers::WithinAbs(-3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[2].Pos.X,Catch::Matchers::WithinAbs(3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[2].Pos.Y,Catch::Matchers::WithinAbs(0, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[2].Pos.Z,Catch::Matchers::WithinAbs(-3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[4].Pos.X,Catch::Matchers::WithinAbs(-3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[4].Pos.Y,Catch::Matchers::WithinAbs(6, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[4].Pos.Z,Catch::Matchers::WithinAbs(3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[6].Pos.X,Catch::Matchers::WithinAbs(-3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[6].Pos.Y,Catch::Matchers::WithinAbs(0, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[6].Pos.Z,Catch::Matchers::WithinAbs(3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[9].Pos.X,Catch::Matchers::WithinAbs(3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[9].Pos.Y,Catch::Matchers::WithinAbs(6, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[9].Pos.Z,Catch::Matchers::WithinAbs(3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[11].Pos.X,Catch::Matchers::WithinAbs(3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[11].Pos.Y,Catch::Matchers::WithinAbs(6, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[11].Pos.Z,Catch::Matchers::WithinAbs(-3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[12].Pos.X,Catch::Matchers::WithinAbs(-3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[12].Pos.Y,Catch::Matchers::WithinAbs(0, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[12].Pos.Z,Catch::Matchers::WithinAbs(-3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[13].Pos.X,Catch::Matchers::WithinAbs(3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[13].Pos.Y,Catch::Matchers::WithinAbs(0, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[13].Pos.Z,Catch::Matchers::WithinAbs(-3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[15].Pos.X,Catch::Matchers::WithinAbs(3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[15].Pos.Y,Catch::Matchers::WithinAbs(0, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[15].Pos.Z,Catch::Matchers::WithinAbs(3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[16].Pos.X,Catch::Matchers::WithinAbs(-3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[16].Pos.Y,Catch::Matchers::WithinAbs(6, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[16].Pos.Z,Catch::Matchers::WithinAbs(-3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[18].Pos.X,Catch::Matchers::WithinAbs(-3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[18].Pos.Y,Catch::Matchers::WithinAbs(0, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[18].Pos.Z,Catch::Matchers::WithinAbs(-3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[19].Pos.X,Catch::Matchers::WithinAbs(3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[19].Pos.Y,Catch::Matchers::WithinAbs(0, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[19].Pos.Z,Catch::Matchers::WithinAbs(-3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[22].Pos.X,Catch::Matchers::WithinAbs(3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[22].Pos.Y,Catch::Matchers::WithinAbs(0, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+				REQUIRE_THAT(vertices[22].Pos.Z,Catch::Matchers::WithinAbs(3, 0.0001f) || Catch::Matchers::WithinAbs(0, 0.000001));
+
+    }
 }
