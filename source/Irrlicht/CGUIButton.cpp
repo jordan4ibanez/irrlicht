@@ -41,11 +41,6 @@ CGUIButton::CGUIButton(std::shared_ptr<IGUIEnvironment> environment, std::shared
 //! destructor
 CGUIButton::~CGUIButton()
 {
-	if (OverrideFont)
-		OverrideFont->drop();
-
-	if (SpriteBank)
-		SpriteBank->drop();
 }
 
 
