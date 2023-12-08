@@ -70,14 +70,8 @@ void CGUIButton::setDrawBorder(bool border)
 }
 
 
-void CGUIButton::setSpriteBank(IGUISpriteBank* sprites)
+void CGUIButton::setSpriteBank(std::shared_ptr<IGUISpriteBank> sprites)
 {
-	if (sprites)
-		sprites->grab();
-
-	if (SpriteBank)
-		SpriteBank->drop();
-
 	SpriteBank = sprites;
 }
 
@@ -316,7 +310,7 @@ void CGUIButton::draw()
 
 	if (Text.size())
 	{
-		IGUIFont* font = getActiveFont();
+		std::shared_ptr<IGUIFont> font = getActiveFont();
 
 		core::rect<s32> rect = AbsoluteRect;
 		if (Pressed)
@@ -423,22 +417,16 @@ EGUI_BUTTON_IMAGE_STATE CGUIButton::getImageState(bool pressed) const
 }
 
 //! sets another skin independent font. if this is set to zero, the button uses the font of the skin.
-void CGUIButton::setOverrideFont(IGUIFont* font)
+void CGUIButton::setOverrideFont(std::shared_ptr<IGUIFont> font)
 {
 	if (OverrideFont == font)
 		return;
 
-	if (OverrideFont)
-		OverrideFont->drop();
-
 	OverrideFont = font;
-
-	if (OverrideFont)
-		OverrideFont->grab();
 }
 
 //! Gets the override font (if any)
-IGUIFont * CGUIButton::getOverrideFont() const
+std::shared_ptr<IGUIFont> CGUIButton::getOverrideFont() const
 {
 	return OverrideFont;
 }
@@ -448,7 +436,7 @@ std::shared_ptr<IGUIFont> CGUIButton::getActiveFont() const
 {
 	if ( OverrideFont )
 		return OverrideFont;
-	IGUISkin* skin = Environment->getSkin();
+	std::shared_ptr<IGUISkin> skin = Environment->getSkin();
 	if (skin)
 		return skin->getFont(EGDF_BUTTON);
 	return 0;
@@ -470,7 +458,7 @@ irr::video::SColor CGUIButton::getActiveColor() const
 {
 	if ( OverrideColorEnabled )
 		return OverrideColor;
-	IGUISkin* skin = Environment->getSkin();
+	std::shared_ptr<IGUISkin> skin = Environment->getSkin();
 	if (skin)
 		return OverrideColorEnabled ? OverrideColor : skin->getColor(isEnabled() ? EGDC_BUTTON_TEXT : EGDC_GRAY_TEXT);
 	return OverrideColor;
