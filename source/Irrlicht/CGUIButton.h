@@ -20,7 +20,7 @@ namespace gui
 	public:
 
 		//! constructor
-		CGUIButton(std::shared_ptr<IGUIEnvironment> environment, std::shared_ptr<IGUIElement>* parent,
+		CGUIButton(std::shared_ptr<IGUIEnvironment> environment, std::shared_ptr<IGUIElement> parent,
 			s32 id, core::rect<s32> rectangle, bool noclip=false);
 
 		//! destructor
@@ -176,7 +176,7 @@ namespace gui
 		};
 
 		ButtonSprite ButtonSprites[EGBS_COUNT];
-		IGUISpriteBank* SpriteBank;
+		std::shared_ptr<IGUISpriteBank> SpriteBank;
 
 		struct ButtonImage
 		{

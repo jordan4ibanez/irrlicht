@@ -4,6 +4,7 @@
 
 #include "CGUIButton.h"
 
+#include <memory>
 #include "IGUISkin.h"
 #include "IGUIEnvironment.h"
 #include "IVideoDriver.h"
@@ -16,7 +17,7 @@ namespace gui
 {
 
 //! constructor
-CGUIButton::CGUIButton(IGUIEnvironment* environment, IGUIElement* parent,
+CGUIButton::CGUIButton(std::shared_ptr<IGUIEnvironment> environment, std::shared_ptr<IGUIElement> parent,
 			s32 id, core::rect<s32> rectangle, bool noclip)
 : IGUIButton(environment, parent, id, rectangle),
 	SpriteBank(0), OverrideFont(0),
@@ -443,7 +444,7 @@ IGUIFont * CGUIButton::getOverrideFont() const
 }
 
 //! Get the font which is used right now for drawing
-IGUIFont* CGUIButton::getActiveFont() const
+std::shared_ptr<IGUIFont> CGUIButton::getActiveFont() const
 {
 	if ( OverrideFont )
 		return OverrideFont;

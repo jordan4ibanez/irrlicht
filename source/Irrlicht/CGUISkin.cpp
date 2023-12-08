@@ -160,7 +160,7 @@ CGUISkin::CGUISkin(EGUI_SKIN_TYPE type, video::IVideoDriver* driver)
 	Icons[EGDI_DIRECTORY] = 246;
 
 	for (u32 i=0; i<EGDF_COUNT; ++i)
-		Fonts[i] = 0;
+		Fonts->at(i) = 0;
 
 	UseGradient = (Type == EGST_WINDOWS_METALLIC) || (Type == EGST_BURNING_SKIN) ;
 }
@@ -169,14 +169,6 @@ CGUISkin::CGUISkin(EGUI_SKIN_TYPE type, video::IVideoDriver* driver)
 //! destructor
 CGUISkin::~CGUISkin()
 {
-	for (u32 i=0; i<EGDF_COUNT; ++i)
-	{
-		if (Fonts[i])
-			Fonts[i]->drop();
-	}
-
-	if (SpriteBank)
-		SpriteBank->drop();
 }
 
 
@@ -217,48 +209,40 @@ void CGUISkin::setSize(EGUI_DEFAULT_SIZE which, s32 size)
 
 
 //! returns the default font
-IGUIFont* CGUISkin::getFont(EGUI_DEFAULT_FONT which) const
+std::shared_ptr<IGUIFont> CGUISkin::getFont(EGUI_DEFAULT_FONT which) const
 {
-	if (((u32)which < EGDF_COUNT) && Fonts[which])
-		return Fonts[which];
+
+  // Fonts->get()->at()
+	if (((u32)which < EGDF_COUNT) && Fonts->at(which))
+		return Fonts->at(which);
 	else
-		return Fonts[EGDF_DEFAULT];
+		return Fonts->at(EGDF_DEFAULT);
 }
 
 
 //! sets a default font
-void CGUISkin::setFont(IGUIFont* font, EGUI_DEFAULT_FONT which)
+void CGUISkin::setFont(std::shared_ptr<IGUIFont> font, EGUI_DEFAULT_FONT which)
 {
 	if ((u32)which >= EGDF_COUNT)
 		return;
 
 	if (font)
 	{
-		font->grab();
-		if (Fonts[which])
-			Fonts[which]->drop();
-
-		Fonts[which] = font;
+		Fonts->at(which) = font;
 	}
 }
 
 
 //! gets the sprite bank stored
-IGUISpriteBank* CGUISkin::getSpriteBank() const
+std::shared_ptr<IGUISpriteBank> CGUISkin::getSpriteBank() const
 {
 	return SpriteBank;
 }
 
 
 //! set a new sprite bank or remove one by passing 0
-void CGUISkin::setSpriteBank(IGUISpriteBank* bank)
+void CGUISkin::setSpriteBank(std::shared_ptr<IGUISpriteBank> bank)
 {
-	if (bank)
-		bank->grab();
-
-	if (SpriteBank)
-		SpriteBank->drop();
-
 	SpriteBank = bank;
 }
 

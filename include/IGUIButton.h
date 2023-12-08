@@ -111,22 +111,22 @@ namespace gui
 	public:
 
 		//! constructor
-		IGUIButton(IGUIEnvironment* environment, IGUIElement* parent, s32 id, core::rect<s32> rectangle)
+		IGUIButton(std::shared_ptr<IGUIEnvironment> environment, std::shared_ptr<IGUIElement> parent, s32 id, core::rect<s32> rectangle)
 			: IGUIElement(EGUIET_BUTTON, environment, parent, id, rectangle) {}
 
 		//! Sets another skin independent font.
 		/** If this is set to zero, the button uses the font of the skin.
 		\param font: New font to set. */
-		virtual void setOverrideFont(IGUIFont* font=0) = 0;
+		virtual void setOverrideFont(std::shared_ptr<IGUIFont> font=0) = 0;
 
 		//! Gets the override font (if any)
 		/** \return The override font (may be 0) */
-		virtual IGUIFont* getOverrideFont(void) const = 0;
+		virtual std::shared_ptr<IGUIFont> getOverrideFont(void) const = 0;
 
 		//! Get the font which is used right now for drawing
 		/** Currently this is the override font when one is set and the
 		font of the active skin otherwise */
-		virtual IGUIFont* getActiveFont() const = 0;
+		virtual std::shared_ptr<IGUIFont> getActiveFont() const = 0;
 
 		//! Sets another color for the button text.
 		/** When set, this color is used instead of EGDC_BUTTON_TEXT/EGDC_GRAY_TEXT.
@@ -161,38 +161,38 @@ namespace gui
 		\param state: One of ::EGUI_BUTTON_IMAGE_STATE
 		\param image: Image to be displayed or NULL to remove the image
 		\param sourceRect: Source rectangle on the image texture. When width or height are 0 then the full texture-size is used (default). */
-		virtual void setImage(EGUI_BUTTON_IMAGE_STATE state, video::ITexture* image=0, const core::rect<s32>& sourceRect=core::rect<s32>(0,0,0,0)) = 0;
+		virtual void setImage(EGUI_BUTTON_IMAGE_STATE state, std::shared_ptr<video::ITexture> image=0, const core::rect<s32>& sourceRect=core::rect<s32>(0,0,0,0)) = 0;
 
 		//! Sets an image which should be displayed on the button when it is in normal state.
 		/** This is identical to calling setImage(EGBIS_IMAGE_UP, image); and might be deprecated in future revisions.
 		\param image: Image to be displayed */
-		virtual void setImage(video::ITexture* image=0) = 0;
+		virtual void setImage(std::shared_ptr<video::ITexture> image=0) = 0;
 
 		//! Sets a background image for the button when it is in normal state.
 		/** This is identical to calling setImage(EGBIS_IMAGE_UP, image, sourceRect); and might be deprecated in future revisions.
 		\param image: Texture containing the image to be displayed
 		\param sourceRect: Position in the texture, where the image is located.
 		When width or height are 0 then the full texture-size is used */
-		virtual void setImage(video::ITexture* image, const core::rect<s32>& sourceRect) = 0;
+		virtual void setImage(std::shared_ptr<video::ITexture> image, const core::rect<s32>& sourceRect) = 0;
 
 		//! Sets a background image for the button when it is in pressed state.
 		/** This is identical to calling setImage(EGBIS_IMAGE_DOWN, image); and might be deprecated in future revisions.
 		If no images is specified for the pressed state via
 		setPressedImage(), this image is also drawn in pressed state.
 		\param image: Image to be displayed */
-		virtual void setPressedImage(video::ITexture* image=0) = 0;
+		virtual void setPressedImage(std::shared_ptr<video::ITexture> image=0) = 0;
 
 		//! Sets an image which should be displayed on the button when it is in pressed state.
 		/** This is identical to calling setImage(EGBIS_IMAGE_DOWN, image, sourceRect); and might be deprecated in future revisions.
 		\param image: Texture containing the image to be displayed
 		\param sourceRect: Position in the texture, where the image is located */
-		virtual void setPressedImage(video::ITexture* image, const core::rect<s32>& sourceRect) = 0;
+		virtual void setPressedImage(std::shared_ptr<video::ITexture> image, const core::rect<s32>& sourceRect) = 0;
 
 
 		//! Sets the sprite bank used by the button
 		/** NOTE: The spritebank itself is _not_ serialized so far. The sprites are serialized.
 		Which means after loading the gui you still have to set the spritebank manually. */
-		virtual void setSpriteBank(IGUISpriteBank* bank=0) = 0;
+		virtual void setSpriteBank(std::shared_ptr<IGUISpriteBank> bank=0) = 0;
 
 		//! Sets the animated sprite for a specific button state
 		/** Several sprites can be drawn at the same time.

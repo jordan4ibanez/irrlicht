@@ -61,7 +61,7 @@ public:
 
 
 	//! Returns parent of this element.
-	IGUIElement* getParent() const
+	std::shared_ptr<IGUIElement> getParent() const
 	{
 		return Parent;
 	}

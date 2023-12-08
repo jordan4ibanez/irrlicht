@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <memory>
+#include <vector>
 #include "IGUISkin.h"
 #include "irrString.h"
 
@@ -38,16 +40,16 @@ namespace gui
 		void setSize(EGUI_DEFAULT_SIZE which, s32 size) override;
 
 		//! returns the default font
-		IGUIFont* getFont(EGUI_DEFAULT_FONT which=EGDF_DEFAULT) const override;
+		std::shared_ptr<IGUIFont> getFont(EGUI_DEFAULT_FONT which=EGDF_DEFAULT) const override;
 
 		//! sets a default font
-		void setFont(IGUIFont* font, EGUI_DEFAULT_FONT which=EGDF_DEFAULT) override;
+		void setFont(std::shared_ptr<IGUIFont> font, EGUI_DEFAULT_FONT which=EGDF_DEFAULT) override;
 
 		//! sets the sprite bank used for drawing icons
-		void setSpriteBank(IGUISpriteBank* bank) override;
+		void setSpriteBank(std::shared_ptr<IGUISpriteBank> bank) override;
 
 		//! gets the sprite bank used for drawing icons
-		IGUISpriteBank* getSpriteBank() const override;
+		std::shared_ptr<IGUISpriteBank> getSpriteBank() const override;
 
 		//! Returns a default icon
 		/** Returns the sprite index within the sprite bank */
@@ -217,8 +219,8 @@ namespace gui
 		video::SColor Colors[EGDC_COUNT];
 		s32 Sizes[EGDS_COUNT];
 		u32 Icons[EGDI_COUNT];
-		IGUIFont* Fonts[EGDF_COUNT];
-		IGUISpriteBank* SpriteBank;
+		std::vector<std::shared_ptr<IGUIFont>> Fonts[EGDF_COUNT];
+		std::shared_ptr<IGUISpriteBank> SpriteBank;
 		core::stringw Texts[EGDT_COUNT];
 		video::IVideoDriver* Driver;
 		bool UseGradient;
