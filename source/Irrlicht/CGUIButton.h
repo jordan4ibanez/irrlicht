@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <memory>
 #include "IGUIButton.h"
 #include "IGUISpriteBank.h"
 #include "ITexture.h"
@@ -19,7 +20,7 @@ namespace gui
 	public:
 
 		//! constructor
-		CGUIButton(IGUIEnvironment* environment, IGUIElement* parent,
+		CGUIButton(std::shared_ptr<IGUIEnvironment> environment, std::shared_ptr<IGUIElement>* parent,
 			s32 id, core::rect<s32> rectangle, bool noclip=false);
 
 		//! destructor
@@ -32,13 +33,13 @@ namespace gui
 		void draw() override;
 
 		//! sets another skin independent font. if this is set to zero, the button uses the font of the skin.
-		void setOverrideFont(IGUIFont* font=0) override;
+		void setOverrideFont(std::shared_ptr<IGUIFont> font=0) override;
 
 		//! Gets the override font (if any)
-		IGUIFont* getOverrideFont() const override;
+		std::shared_ptr<IGUIFont> getOverrideFont() const override;
 
 		//! Get the font which is used right now for drawing
-		IGUIFont* getActiveFont() const override;
+		std::shared_ptr<IGUIFont> getActiveFont() const override;
 
 		//! Sets another color for the button text.
 		void setOverrideColor(video::SColor color)  override;
@@ -56,22 +57,22 @@ namespace gui
 		bool isOverrideColorEnabled(void) const  override;
 
 		//! Sets an image which should be displayed on the button when it is in the given state.
-		void setImage(EGUI_BUTTON_IMAGE_STATE state, video::ITexture* image=0, const core::rect<s32>& sourceRect=core::rect<s32>(0,0,0,0))  override;
+		void setImage(EGUI_BUTTON_IMAGE_STATE state, std::shared_ptr<video::ITexture> image=0, const core::rect<s32>& sourceRect=core::rect<s32>(0,0,0,0))  override;
 
 		//! Sets an image which should be displayed on the button when it is in normal state.
-		void setImage(video::ITexture* image=0) override
+		void setImage(std::shared_ptr<video::ITexture> image=0) override
 		{
 			setImage(EGBIS_IMAGE_UP, image);
 		}
 
 		//! Sets an image which should be displayed on the button when it is in normal state.
-		void setImage(video::ITexture* image, const core::rect<s32>& pos) override
+		void setImage(std::shared_ptr<video::ITexture> image, const core::rect<s32>& pos) override
 		{
 			setImage(EGBIS_IMAGE_UP, image, pos);
 		}
 
 		//! Sets an image which should be displayed on the button when it is in pressed state.
-		void setPressedImage(video::ITexture* image=0) override
+		void setPressedImage(std::shared_ptr<video::ITexture> image=0) override
 		{
 			setImage(EGBIS_IMAGE_DOWN, image);
 		}
@@ -190,8 +191,6 @@ namespace gui
 
 			~ButtonImage()
 			{
-				if ( Texture )
-					Texture->drop();
 			}
 
 			ButtonImage& operator=(const ButtonImage& other)
@@ -199,10 +198,6 @@ namespace gui
 				if ( this == &other )
 					return *this;
 
-				if (other.Texture)
-					other.Texture->grab();
-				if ( Texture )
-					Texture->drop();
 				Texture = other.Texture;
 				SourceRect = other.SourceRect;
 				return *this;
@@ -214,13 +209,13 @@ namespace gui
 			}
 
 
-			video::ITexture* Texture;
+			std::shared_ptr<video::ITexture> Texture;
 			core::rect<s32> SourceRect;
 		};
 
 		ButtonImage ButtonImages[EGBIS_COUNT];
 
-		IGUIFont* OverrideFont;
+		std::shared_ptr<IGUIFont> OverrideFont;
 
 		bool OverrideColorEnabled;
 		video::SColor OverrideColor;

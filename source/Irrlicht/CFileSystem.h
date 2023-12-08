@@ -6,6 +6,7 @@
 
 #include "IFileSystem.h"
 #include "irrArray.h"
+#include <memory>
 
 namespace irr
 {
@@ -133,7 +134,7 @@ private:
 	//! currently attached ArchiveLoaders
 	core::array<IArchiveLoader*> ArchiveLoader;
 	//! currently attached Archives
-	core::array<IFileArchive*> FileArchives;
+	core::array<std::shared_ptr<IFileArchive>> FileArchives;
 };
 
 

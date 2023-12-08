@@ -5,7 +5,6 @@
 #ifndef __I_GUI_SKIN_H_INCLUDED__
 #define __I_GUI_SKIN_H_INCLUDED__
 
-#include "IReferenceCounted.h"
 #include "EGUIAlignment.h"
 #include "SColor.h"
 #include "rect.h"

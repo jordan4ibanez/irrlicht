@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <memory>
 #include "IReadFile.h"
 #include "irrArray.h"
 #include "irrString.h"
@@ -157,11 +158,11 @@ namespace io
 		//! Creates an archive from the filename
 		/** \param file File handle to check.
 		\return Pointer to newly created archive, or 0 upon error. */
-		IFileArchive* createArchive(const io::path& filename, bool ignoreCase, bool ignorePaths) const override;
+		std::shared_ptr<IFileArchive> createArchive(const io::path& filename, bool ignoreCase, bool ignorePaths) const override;
 
 		//! creates/loads an archive from the file.
 		//! \return Pointer to the created archive. Returns 0 if loading failed.
-		io::IFileArchive* createArchive(io::IReadFile* file, bool ignoreCase, bool ignorePaths) const override;
+		std::shared_ptr<io::IFileArchive> createArchive(io::IReadFile* file, bool ignoreCase, bool ignorePaths) const override;
 
 	private:
 		io::IFileSystem* FileSystem;

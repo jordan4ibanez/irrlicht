@@ -441,7 +441,7 @@ u32 CFileSystem::getFileArchiveCount() const
 }
 
 
-IFileArchive* CFileSystem::getFileArchive(u32 index)
+std::shared_ptr<IFileArchive> CFileSystem::getFileArchive(u32 index)
 {
 	return index < getFileArchiveCount() ? FileArchives[index] : 0;
 }

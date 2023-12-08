@@ -5,8 +5,6 @@
 #ifndef __I_LOGGER_H_INCLUDED__
 #define __I_LOGGER_H_INCLUDED__
 
-#include "IReferenceCounted.h"
-
 namespace irr
 {
 

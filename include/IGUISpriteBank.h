@@ -5,7 +5,6 @@
 #ifndef __I_GUI_SPRITE_BANK_H_INCLUDED__
 #define __I_GUI_SPRITE_BANK_H_INCLUDED__
 
-#include "IReferenceCounted.h"
 #include "irrArray.h"
 #include "SColor.h"
 #include "rect.h"

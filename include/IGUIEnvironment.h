@@ -5,7 +5,6 @@
 #ifndef __I_GUI_ENVIRONMENT_H_INCLUDED__
 #define __I_GUI_ENVIRONMENT_H_INCLUDED__
 
-#include "IReferenceCounted.h"
 #include "IGUISkin.h"
 #include "rect.h"
 #include "EFocusFlags.h"

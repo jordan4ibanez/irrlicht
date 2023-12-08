@@ -485,17 +485,12 @@ bool CGUIButton::isOverrideColorEnabled() const
 	return OverrideColorEnabled;
 }
 
-void CGUIButton::setImage(EGUI_BUTTON_IMAGE_STATE state, video::ITexture* image, const core::rect<s32>& sourceRect)
+void CGUIButton::setImage(EGUI_BUTTON_IMAGE_STATE state, std::shared_ptr<video::ITexture> image, const core::rect<s32>& sourceRect)
 {
 	if ( state >= EGBIS_COUNT )
 		return;
 
-	if ( image )
-		image->grab();
-
 	u32 stateIdx = (u32)state;
-	if ( ButtonImages[stateIdx].Texture )
-		ButtonImages[stateIdx].Texture->drop();
 
 	ButtonImages[stateIdx].Texture = image;
 	ButtonImages[stateIdx].SourceRect = sourceRect;

@@ -5,7 +5,6 @@
 #ifndef __I_GUI_ELEMENT_H_INCLUDED__
 #define __I_GUI_ELEMENT_H_INCLUDED__
 
-#include "IReferenceCounted.h"
 #include "rect.h"
 #include "irrString.h"
 #include "IEventReceiver.h"
@@ -17,18 +16,19 @@
 #include <algorithm>
 #include <list>
 #include <vector>
+#include <memory>
 
 namespace irr
 {
 namespace gui
 {
 //! Base class of all GUI elements.
-class IGUIElement : virtual public IReferenceCounted, public IEventReceiver
+class IGUIElement : public IEventReceiver
 {
 public:
 
 	//! Constructor
-	IGUIElement(EGUI_ELEMENT_TYPE type, IGUIEnvironment* environment, IGUIElement* parent,
+	IGUIElement(EGUI_ELEMENT_TYPE type, std::shared_ptr<IGUIEnvironment> environment, std::shared_ptr<IGUIElement> parent,
 		s32 id, const core::rect<s32>& rectangle)
 		: Parent(0), RelativeRect(rectangle), AbsoluteRect(rectangle),
 		AbsoluteClippingRect(rectangle), DesiredRect(rectangle),
@@ -955,7 +955,7 @@ protected:
 protected:
 
 	//! List of all children of this element
-	std::list<IGUIElement*> Children;
+	std::list<std::shared_ptr<IGUIElement>> Children;
 
 	//! Pointer to the parent
 	IGUIElement* Parent;
@@ -1022,7 +1022,7 @@ protected:
 	EGUI_ALIGNMENT AlignLeft, AlignRight, AlignTop, AlignBottom;
 
 	//! GUI Environment
-	IGUIEnvironment* Environment;
+	std::shared_ptr<IGUIEnvironment> Environment;
 
 	//! type of element
 	EGUI_ELEMENT_TYPE Type;

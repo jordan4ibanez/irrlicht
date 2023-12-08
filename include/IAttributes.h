@@ -5,7 +5,6 @@
 #ifndef __I_ATTRIBUTES_H_INCLUDED__
 #define __I_ATTRIBUTES_H_INCLUDED__
 
-#include "IReferenceCounted.h"
 #include "SColor.h"
 #include "vector3d.h"
 #include "vector2d.h"

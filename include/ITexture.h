@@ -5,7 +5,6 @@
 #ifndef __I_TEXTURE_H_INCLUDED__
 #define __I_TEXTURE_H_INCLUDED__
 
-#include "IReferenceCounted.h"
 #include "IImage.h"
 #include "dimension2d.h"
 #include "EDriverTypes.h"
